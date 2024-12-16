@@ -5,31 +5,30 @@
 #include <iomanip>
 
 const double c = 3e8; // Скорость света, м/с
+const double pi = 3.141592653589793;
+double a = 4.0;
 
 // Функция для расчета резонансной частоты
 double resonanceFrequency(double a, double b, int m, int n) {
-    return (c / 2) * sqrt((m / a) * (m / a) + (n / b) * (n / b));
+    return c * pi * sqrt((m / a) * (m / a) + (n / b) * (n / b));
 }
 
-// Функция для расчета мнимой части резонанса
-double imaginaryPart(double f) {
-    return f * 0.1; // Примерная модель мнимой части
-}
 
 int main() {
-    double a; // Высота резонатора
-    std::cout << "Введите высоту резонатора (a): ";
-    std::cin >> a;
 
     std::vector<double> b_values; // Ширина резонатора
     std::vector<double> frequencies; // Частоты резонатора
     std::vector<double> imaginary_parts; // Мнимые части резонансов
 
-    for (double b = 0.01; b <= 1.0; b += 0.01) { // Изменение ширины от 0.01 до 1.0 м
-        double f = resonanceFrequency(a, b, 1, 1); // Основной режим (m=1, n=1)
-        b_values.push_back(b);
-        frequencies.push_back(f);
-        imaginary_parts.push_back(imaginaryPart(f));
+    for (double b = 3.0; b <= 5.0; b += 0.05) { // Изменение ширины от 0.01 до 1.0 м
+        for (int n = 1; n < 5; n++) {
+            for (int m = 1; m < 5; m++) {
+                double f = resonanceFrequency(a, b, m, n);
+                b_values.push_back(b);
+                frequencies.push_back(f * f / (a * a * c * c));
+                imaginary_parts.push_back(0);
+            }
+        }
     }
 
     // Запись результатов в файл
