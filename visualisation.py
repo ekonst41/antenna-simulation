@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Загрузка данных из CSV файла
-file_path = 'resonator_frequencies.txt'  # Укажите путь к вашему файлу
+file_path = 'cmake-build-debug/resonator_frequencies.txt'  # Укажите путь к вашему файлу
 data = pd.read_csv(file_path)
 
 # Проверка загруженных данных
@@ -31,4 +31,5 @@ plt.legend()
 
 # Показать графики
 plt.tight_layout()
-plt.show()
+plt.savefig('output.png')
+# plt.show()
