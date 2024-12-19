@@ -6,7 +6,8 @@ from tqdm import tqdm
 
 
 frames = []
-steps = 10000
+steps = 2000
+dt = cmp.dt
 a = cmp.a
 h = cmp.h
 d = cmp.d
@@ -16,12 +17,13 @@ lines = lines * cmp.steps_pl
 
 cmp.initialize()
 for t in tqdm(range(steps), desc="Итерации"):
-    cmp.update_field()
+    cmp.update_field(t * dt)
     if t % 10 == 0:
         fig = plt.subplots(figsize=(9, 3))
-        plt.imshow(cmp.E, cmap='hot', interpolation='bilinear', aspect='auto')  # Использование цветовой карты 'hot'
-        x, y = zip(*lines)
-        plt.plot(x, y, color='black')
+        plt.imshow(cmp.E**2*100, cmap='hot', interpolation='bilinear', aspect='auto')  # Использование цветовой карты 'hot'
+        # x, y = zip(*lines)
+        #plt.plot(x, y, color='black')
+
 
         plt.colorbar(label='Значения')  # Добавление цветовой шкалы
         plt.title('Тепловая карта')  # Заголовок графика
@@ -34,6 +36,6 @@ for t in tqdm(range(steps), desc="Итерации"):
         frames.append(imageio.imread('temp.png')) # Читаем изображение и добавляем его в список кадров
 
 # Создание анимированного GIF из кадров
-imageio.mimsave('heatmap3.gif', frames, duration=0.2)  # duration - время отображения каждого кадра в секундах
+imageio.mimsave('heatmap5.gif', frames, duration=0.2)  # duration - время отображения каждого кадра в секундах
 
 

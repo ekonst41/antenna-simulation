@@ -6,8 +6,9 @@ a = 1.0 # длина резонатора
 h = 1.0 # высота резонатора
 d = 0.2 # толщина волновода
 l = 1.0 # длина волновода
-E_0 = 0.01 # амплитуда поля
+E_0 = 0.1 # амплитуда поля
 c = 3e8 # скорость света
+omega = c * np.pi / a
 
 steps_pl = 100
 
@@ -28,6 +29,8 @@ def out(x:float, y:float):
         return True
     elif l < x < l+a and (y <= 0 or y >= h):
         return True
+    elif (x - l - a/2)**2 + (y - h/2)**2 <= d*d/4:
+        return True
     return False
 
 
@@ -47,7 +50,7 @@ def initialize():
     E_prev = E.copy()
 
 
-def update_field():
+def update_field(t: float):
     global E, E_prev, E_next
 
     for i in range(1, Ny - 1):
@@ -60,7 +63,7 @@ def update_field():
             E_next[i, j] = (c * c * dt * dt) * (d2E_dx2 + d2E_dy2) + 2 * E[i, j] - E_prev[i, j]
             '''if flag == 1 and d2E_dx2 != 0 and d2E_dy2 != 0 and i % 10 == 0 and j % 10 == 0:
                 print(i, j, d2E_dx2, d2E_dy2, E_next[i, j], sep='  ,  ')'''
-
+    # E_next[Ny//2, 0] = E_0 * np.cos(omega * t)
     E_prev = E.copy()
     E = E_next.copy()
 
