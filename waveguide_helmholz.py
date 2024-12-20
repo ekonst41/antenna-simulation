@@ -6,8 +6,9 @@ import numpy as np
 x_pts = np.linspace(0, 100, 101)
 y_pts = np.linspace(-15, 15, 61)
 mesh = skfem.MeshTri.init_tensor(x_pts, y_pts) # создание сетки
-mesh = mesh.with_subdomains({'air': lambda x: x[0] < 50,
-                             'plastic': lambda x: x[0] >= 50}) # границы волновода
+mesh = mesh.with_subdomains({'air': lambda x: (x[0] < 50) | (x[0] >= 50) & (np.abs(x[1]) > 10),
+    'waveguide': lambda x: (x[0] < 50) & (np.abs(x[1]) <= 5),
+    'resonator': lambda x: (x[0] >= 50) & (np.abs(x[1]) <= 10)})
 mesh = mesh.with_boundaries({'bound_xmin': lambda x: np.isclose(x[0], x_pts[0]),
                              'bound_xmax': lambda x: np.isclose(x[0], x_pts[-1]),
                              'waveguide_min': lambda x: np.isclose(x[1], 5) & (x[0] <= 50),
@@ -27,12 +28,16 @@ mu_air = 1
 eps_plastic = 2
 mu_plastic = 1
 fem.assemble_subdomains(alpha={'air': 1 / mu_air,
-                               'plastic': 1 / mu_plastic},
+                               'waveguide': 1 / mu_plastic,
+                               'resonator': 1 / mu_plastic},
                         beta={'air': -1 * k0 ** 2 * eps_air,
-                              'plastic': -1 * k0 ** 2 * eps_plastic},
+                              'waveguide': -1 * k0 ** 2 * eps_plastic,
+                              'resonator': -1 * k0 ** 2 * eps_plastic},
                         f={'air': 0,
-                           'plastic': 0}) # TM волна (см README.md)
+                           'waveguide': 0,
+                           'resonator': 0})
 
+# Граничные условия Дирихле
 fem.assemble_boundaries_dirichlet(value={'bound_ymin': 0,
                                          'bound_ymax': 0,
                                          'waveguide_min': 0,
@@ -40,6 +45,7 @@ fem.assemble_boundaries_dirichlet(value={'bound_ymin': 0,
                                          'resonator_left_min': 0,
                                          'resonator_left_max': 0})
 
+# Граничные условия третьего рода (Неймана)
 fem.assemble_boundaries_3rd(gamma={'bound_xmin': 1 / mu_air * 1j * k0,
                                    'bound_xmax': 1 / mu_plastic * 1j * k0},
                             q={'bound_xmin': 1 / mu_air * 2j * k0,
