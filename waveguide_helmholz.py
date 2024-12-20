@@ -4,22 +4,27 @@ import skfem
 import numpy as np
 
 x_pts = np.linspace(0, 100, 101)
-y_pts = np.linspace(-5, 5, 21)
+y_pts = np.linspace(-15, 15, 61)
 mesh = skfem.MeshTri.init_tensor(x_pts, y_pts) # создание сетки
 mesh = mesh.with_subdomains({'air': lambda x: x[0] < 50,
                              'plastic': lambda x: x[0] >= 50}) # границы волновода
 mesh = mesh.with_boundaries({'bound_xmin': lambda x: np.isclose(x[0], x_pts[0]),
                              'bound_xmax': lambda x: np.isclose(x[0], x_pts[-1]),
-                             'bound_ymin': lambda x: np.isclose(x[1], y_pts[0]),
-                             'bound_ymax': lambda x: np.isclose(x[1], y_pts[-1])})
+                             'waveguide_min': lambda x: np.isclose(x[1], 5) & (x[0] <= 50),
+                             'waveguide_max': lambda x: np.isclose(x[1], 10) & (x[0] <= 50),
+                             'bound_ymin': lambda x: np.isclose(x[1], -15) & (x[0] >= 50),
+                             'bound_ymax': lambda x: np.isclose(x[1], 15) & (x[0] >= 50),
+                             'resonator_left_min': lambda x: np.isclose(x[0], 50) & (x[1] <= 5),
+                             'resonator_left_max': lambda x: np.isclose(x[0], 50) & (x[1] >= 10)})
 
 element = skfem.ElementTriP2()
 fem = Helmholtz(mesh, element)
 
-k0 = 0.5
+k0 = 0.1667
 eps_air = 1
 mu_air = 1
-eps_plastic = 2 - 0.1j
+#eps_plastic = 2 - 0.1j
+eps_plastic = 2
 mu_plastic = 1
 fem.assemble_subdomains(alpha={'air': 1 / mu_air,
                                'plastic': 1 / mu_plastic},
@@ -29,7 +34,11 @@ fem.assemble_subdomains(alpha={'air': 1 / mu_air,
                            'plastic': 0}) # TM волна (см README.md)
 
 fem.assemble_boundaries_dirichlet(value={'bound_ymin': 0,
-                                         'bound_ymax': 0})
+                                         'bound_ymax': 0,
+                                         'waveguide_min': 0,
+                                         'waveguide_max': 0,
+                                         'resonator_left_min': 0,
+                                         'resonator_left_max': 0})
 
 fem.assemble_boundaries_3rd(gamma={'bound_xmin': 1 / mu_air * 1j * k0,
                                    'bound_xmax': 1 / mu_plastic * 1j * k0},
@@ -49,5 +58,5 @@ ax[1].set_aspect(1)
 ax[0].set_title('Real Part')
 ax[1].set_title('Imaginary Part')
 plt.tight_layout()
-plt.savefig('./waveguide.png')
+plt.savefig('./waveguide1.png')
 plt.close()
