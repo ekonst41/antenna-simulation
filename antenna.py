@@ -11,9 +11,15 @@ class Antenna:
         self.x_min = x0 - diameter / 2
         self.x_max = x0 + diameter / 2
 
-    def check_collision(self, x: float, y: float):
-        y_parabola = (x - self.x0) ** 2 / (4 * self.focal_length) + self.y0
-        return y >= y_parabola
+    #def check_collision(self, x: float, y: float):
+    #    y_parabola = (x - self.x0) ** 2 / (4 * self.focal_length) + self.y0
+    #    return np.isclose(y, y_parabola)
+
+    def antenna_equation(self, x: float):
+        return (x - self.x0) ** 2 / (4 * self.focal_length) + self.y0
+
+    def tangent(self, x: float):
+        return (x - self.x0) / (2 * self.focal_length)
 
     def plot_antenna(self, ax):
         xs = np.linspace(self.x_min, self.x_max, 100)

@@ -28,6 +28,12 @@ class ElectoMagneticMesh:
     
   def add_source(self, source: Source):
     self.source = source
+
+  def check_collision(self, x: float, y: float):
+    return y >= self.antenna.antenna_equation(x) > y - self.dy
+
+  def check_inside_antenna(self, x: float, y: float):
+    return y < self.antenna.antenna_equation(x)
     
   def _calculate_fields(self, dt: float = 0.0025 / (2 * 3e8)):
     for i in range(1, self.grid_size):
@@ -36,6 +42,14 @@ class ElectoMagneticMesh:
 
     for i in range(self.grid_size - 1):
         for j in range(self.grid_size - 1):
+            if self.check_collision((j - self.grid_size//2) * self.dx, i * self.dy):
+              #print(f"Met collision in ({(j - self.grid_size//2) * self.dx, i * self.dy})")
+              self.Ex[i, j] = -1.0 * self.Ey[i, j] * self.antenna.tangent((j - self.grid_size//2) * self.dx)
+              continue
+            if self.check_inside_antenna((j - self.grid_size//2) * self.dx, i * self.dy):
+              self.Ex[i, j] = 0
+              self.Ey[i, j] = 0
+              continue
             self.Ex[i, j] += (dt / epsilon_0) * ((self.Hz[i + 1, j] - self.Hz[i, j]) / self.dy)
             self.Ey[i, j] -= (dt / epsilon_0) * ((self.Hz[i, j + 1] - self.Hz[i, j]) / self.dx)
     # print(self.Hz, self.Ex, self.Ey)
@@ -55,14 +69,14 @@ class ElectoMagneticMesh:
       ax.axis("equal")
 
       for t in tqdm(range(num_steps)):
-        if self.antenna and self.antenna.check_collision:
-          self._collision()  # Обработка коллизий с антенной
+        #if self.antenna and self.antenna.check_collision:
+        #  self._collision()  # Обработка коллизий с антенной
         self._calculate_fields()
           
         if t < num_steps / 10:
           self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(t * dt)  # Применение источника
 
-        print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
+        # print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
         if t % 10 == 0:
           ax.clear()
 
