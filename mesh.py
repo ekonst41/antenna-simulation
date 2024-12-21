@@ -58,7 +58,7 @@ class ElectoMagneticMesh:
             
   def visualize(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8)):
       self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(0)
-      self.Hz[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = np.sqrt(mu_0 / epsilon_0) * self.source.source_func(0)
+      self.Hz[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = np.sqrt(epsilon_0 / mu_0) * self.source.source_func(0)
       '''fig, ax = plt.subplots(figsize=(6, 6))
       ax.set_xlim(0, self.grid_size * self.dx)  # Установка масштаба по оси X
       ax.set_ylim(0, self.grid_size * self.dy)  # Установка масштаба по оси Y
@@ -70,9 +70,10 @@ class ElectoMagneticMesh:
       for t in tqdm(range(num_steps)):
         self._calculate_fields()
           
-        if t < num_steps // 10:
+        if t < num_steps:
           self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(t * dt)  # Применение источника
-          print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
+          self.Hz[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = np.sqrt(epsilon_0 / mu_0) * self.source.source_func(t * dt)
+          #print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
         '''if t == num_steps // 10:
           self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = 0
         '''
