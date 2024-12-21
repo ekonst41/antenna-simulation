@@ -16,7 +16,7 @@ class Antenna:
     #    return np.isclose(y, y_parabola)
 
     def antenna_equation(self, x: float):
-        return (x - self.x0) ** 2 / (4 * self.focal_length) + self.y0
+        return self.x_min <= x <= self.x_max and (x - self.x0) ** 2 / (4 * self.focal_length) + self.y0
 
     def tangent(self, x: float):
         return (x - self.x0) / (2 * self.focal_length)
@@ -26,6 +26,7 @@ class Antenna:
         ys = (xs - self.x0) ** 2 / (4 * self.focal_length) + self.y0
 
         ax.plot(xs, ys, label="Параболическая антенна", color="blue")
+        ax.fill_between(xs, ys, color='lightblue', alpha=0.5)
         ax.scatter(self.x0, self.y0, color="red", label="Центр")
         ax.scatter(self.x0, self.y0 + self.focal_length, color="green", label="Фокус")
 

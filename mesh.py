@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from antenna import Antenna
 from tqdm import tqdm
+import imageio.v2 as imageio
+
+frames = []
 
 epsilon_0 = 8.854e-12
 mu_0 = 4e-7 * np.pi
@@ -43,7 +46,6 @@ class ElectoMagneticMesh:
     for i in range(self.grid_size - 1):
         for j in range(self.grid_size - 1):
             if self.check_collision((j - self.grid_size//2) * self.dx, i * self.dy):
-              #print(f"Met collision in ({(j - self.grid_size//2) * self.dx, i * self.dy})")
               self.Ex[i, j] = -1.0 * self.Ey[i, j] * self.antenna.tangent((j - self.grid_size//2) * self.dx)
               continue
             if self.check_inside_antenna((j - self.grid_size//2) * self.dx, i * self.dy):
@@ -54,46 +56,57 @@ class ElectoMagneticMesh:
             self.Ey[i, j] -= (dt / epsilon_0) * ((self.Hz[i, j + 1] - self.Hz[i, j]) / self.dx)
     # print(self.Hz, self.Ex, self.Ey)
             
-  def _collision(self):
-    # TODO Написать обработку коллизий с антенной
-    pass
-            
-            
   def visualize(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8)):
-      fig, ax = plt.subplots(figsize=(6, 6))
+      self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(0)
+      self.Hz[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = np.sqrt(mu_0 / epsilon_0) * self.source.source_func(0)
+      '''fig, ax = plt.subplots(figsize=(6, 6))
       ax.set_xlim(0, self.grid_size * self.dx)  # Установка масштаба по оси X
       ax.set_ylim(0, self.grid_size * self.dy)  # Установка масштаба по оси Y
       ax.set_xlabel("X (м)")
       ax.set_ylabel("Y (м)")
       ax.set_title("Электромагнитное поле")
-      ax.axis("equal")
+      ax.axis("equal")'''
 
       for t in tqdm(range(num_steps)):
-        #if self.antenna and self.antenna.check_collision:
-        #  self._collision()  # Обработка коллизий с антенной
         self._calculate_fields()
           
-        if t < num_steps / 10:
+        if t < num_steps // 10:
           self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(t * dt)  # Применение источника
-
-        # print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
+          print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
+        '''if t == num_steps // 10:
+          self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = 0
+        '''
         if t % 10 == 0:
-          ax.clear()
+          #print(np.min(self.Ex), np.max(self.Ex))
+          #print(self.Ex[0, 0])
+          fig, ax = plt.subplots(figsize=(6, 6))
+          ax.set_xlim(0, self.grid_size * self.dx)  # Установка масштаба по оси X
+          ax.set_ylim(0, self.grid_size * self.dy)  # Установка масштаба по оси Y
+          ax.set_xlabel("X (м)")
+          ax.set_ylabel("Y (м)")
+          ax.set_title("Электромагнитное поле")
+          ax.axis("equal")
+          #ax.clear()
 
           if self.antenna:
             self.antenna.plot_antenna(ax=ax)
 
                 # Отрисовка электрического поля
-          ax.imshow(self.Ex, cmap='hot', extent=[self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy], origin='lower')
-          ax.set_title(f"Время {t * dt}")
+          ax.imshow(self.Ex, cmap='hot', extent= [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy], origin='lower')
+          # extent= [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy]
+          ax.set_title(f"Время {round(t * dt, 10)}")
           ax.set_xlabel("X (м)")
           ax.set_ylabel("Y (м)")
           ax.axis("equal")
 
           # Обновление графика
-          plt.draw()
-          plt.pause(0.01)  # Пауза для обновления
+          #plt.draw()
+          #plt.pause(0.01)  # Пауза для обновления
+          plt.savefig('temp.png')
+          plt.close()
+          frames.append(imageio.imread('temp.png'))
+      imageio.mimsave('./visuals/antenna3.gif', frames, duration=0.4)  # duration - время отображения каждого кадра в секундах
 
-      plt.show()
+#plt.show()
       
       
