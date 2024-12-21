@@ -9,6 +9,16 @@ frames = []
 epsilon_0 = 8.854e-12
 mu_0 = 4e-7 * np.pi
 
+def max_except_source(E, i, j):
+  mask = np.ones(E.shape, dtype=bool)
+  mask[i, j] = False
+  return np.max(E[mask])
+
+def min_except_source(E, i, j):
+  mask = np.ones(E.shape, dtype=bool)
+  mask[i, j] = False
+  return np.min(E[mask])
+
 class Source:
   def __init__(self, x0: float, y0: float, source_func):
     self.x0 = x0
@@ -70,10 +80,11 @@ class ElectoMagneticMesh:
       for t in tqdm(range(num_steps)):
         self._calculate_fields()
           
-        if t < num_steps:
+        if t < num_steps // 5:
           self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(t * dt)  # Применение источника
           self.Hz[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = np.sqrt(epsilon_0 / mu_0) * self.source.source_func(t * dt)
-          #print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
+
+        #print(round(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2], 5), round(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2 - 1], 5))
         '''if t == num_steps // 10:
           self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = 0
         '''
@@ -93,7 +104,10 @@ class ElectoMagneticMesh:
             self.antenna.plot_antenna(ax=ax)
 
                 # Отрисовка электрического поля
-          ax.imshow(self.Ex, cmap='hot', extent= [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy], origin='lower')
+          min_E = min_except_source(self.Ex, int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2)
+          max_E = max_except_source(self.Ex, int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2)
+          edge = max(abs(min_E), abs(max_E))
+          ax.imshow(self.Ex, cmap='hot', vmin = -edge, vmax = edge, extent= [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy], origin='lower')
           # extent= [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy]
           ax.set_title(f"Время {round(t * dt, 10)}")
           ax.set_xlabel("X (м)")
@@ -106,7 +120,7 @@ class ElectoMagneticMesh:
           plt.savefig('temp.png')
           plt.close()
           frames.append(imageio.imread('temp.png'))
-      imageio.mimsave('./visuals/antenna3.gif', frames, duration=0.4)  # duration - время отображения каждого кадра в секундах
+      imageio.mimsave('./visuals/antenna4.gif', frames, duration=0.4)  # duration - время отображения каждого кадра в секундах
 
 #plt.show()
       
