@@ -15,20 +15,15 @@ class Antenna:
         y_parabola = (x - self.x0) ** 2 / (4 * self.focal_length) + self.y0
         return y >= y_parabola
 
-    def plot_antenna(self):
+    def plot_antenna(self, ax):
         xs = np.linspace(self.x_min, self.x_max, 100)
         ys = (xs - self.x0) ** 2 / (4 * self.focal_length) + self.y0
-        plt.figure(figsize=(8, 6))
-        plt.plot(xs, ys, label="Параболическая антенна")
-        plt.scatter(self.x0, self.y0, color="red", label="Центр")
-        plt.scatter(self.x0, self.y0 + self.focal_length, color="red", label="Фокус")
-        plt.xlabel("X (м)")
-        plt.ylabel("Y (м)")
-        plt.axis("equal")
-        plt.legend()
-        plt.grid()
-        plt.show()
 
+        ax.plot(xs, ys, label="Параболическая антенна", color="blue")
+        ax.scatter(self.x0, self.y0, color="red", label="Центр")
+        ax.scatter(self.x0, self.y0 + self.focal_length, color="green", label="Фокус")
 
-antenna = Antenna(0, 0, 0.2, 0.25)
-antenna.plot_antenna()
+        ax.set_title("Параболическая антенна")
+        # ax.axis("equal")
+        ax.legend()
+        ax.grid()
