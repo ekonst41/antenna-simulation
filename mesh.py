@@ -1,6 +1,8 @@
+from antenna import Antenna
+from source import Source
+
 import numpy as np
 import matplotlib.pyplot as plt
-from antenna import Antenna
 from tqdm import tqdm
 import imageio.v2 as imageio
 
@@ -50,8 +52,8 @@ class ElectoMagneticMesh:
     
   def _calculate_fields(self, dt: float = 0.0025 / (2 * 3e8)):
     for i in range(1, self.grid_size):
-        for j in range(1, self.grid_size):
-            self.Hz[i, j] -= (dt  / mu_0) * ((self.Ey[i, j] - self.Ey[i, j - 1]) / self.dx - (self.Ex[i, j] - self.Ex[i - 1, j]) / self.dy)
+      for j in range(1, self.grid_size):
+          self.Hz[i, j] -= (dt  / mu_0) * ((self.Ey[i, j] - self.Ey[i, j - 1]) / self.dx - (self.Ex[i, j] - self.Ex[i - 1, j]) / self.dy)
 
     for i in range(self.grid_size - 1):
         for j in range(self.grid_size - 1):

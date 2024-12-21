@@ -31,6 +31,5 @@ class Antenna:
         ax.scatter(self.x0, self.y0 + self.focal_length, color="green", label="Фокус")
 
         ax.set_title("Параболическая антенна")
-        # ax.axis("equal")
         ax.legend()
         ax.grid()
