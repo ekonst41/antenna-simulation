@@ -32,21 +32,20 @@ class ElectoMagneticMesh:
   def _calculate_fields(self, dt: float = 0.0025 / (2 * 3e8)):
     for i in range(1, self.grid_size):
         for j in range(1, self.grid_size):
-            self.Hz[i, j] += (dt / (mu_0 * self.dx)) * (self.Ey[i, j] - self.Ey[i-1, j]) - \
-                        (dt / (mu_0 * self.dy)) * (self.Ex[i, j] - self.Ex[i, j-1])
+            self.Hz[i, j] -= (dt  / mu_0) * ((self.Ey[i, j] - self.Ey[i, j - 1]) / self.dx - (self.Ex[i, j] - self.Ex[i - 1, j]) / self.dy)
 
     for i in range(self.grid_size - 1):
         for j in range(self.grid_size - 1):
-            self.Ex[i, j] += (dt / (epsilon_0 * self.dy)) * (self.Hz[i, j+1] - self.Hz[i, j])
-            self.Ey[i, j] -= (dt / (epsilon_0 * self.dx)) * (self.Hz[i+1, j] - self.Hz[i, j])
-            
+            self.Ex[i, j] += (dt / epsilon_0) * ((self.Hz[i + 1, j] - self.Hz[i, j]) / self.dy)
+            self.Ey[i, j] -= (dt / epsilon_0) * ((self.Hz[i, j + 1] - self.Hz[i, j]) / self.dx)
+    # print(self.Hz, self.Ex, self.Ey)
             
   def _collision(self):
     # TODO Написать обработку коллизий с антенной
     pass
             
             
-  def visualize(self, num_steps: int = 100):
+  def visualize(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8)):
       fig, ax = plt.subplots(figsize=(6, 6))
       ax.set_xlim(0, self.grid_size * self.dx)  # Установка масштаба по оси X
       ax.set_ylim(0, self.grid_size * self.dy)  # Установка масштаба по оси Y
@@ -60,9 +59,10 @@ class ElectoMagneticMesh:
           self._collision()  # Обработка коллизий с антенной
         self._calculate_fields()
           
-        if (t < num_steps / 10):
-          self.Ex[20, 100] += self.source.source_func(t)  # Применение источника
+        if t < num_steps / 10:
+          self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2] = self.source.source_func(t * dt)  # Применение источника
 
+        print(self.Ex[int(self.source.y0 / self.dy), int(self.source.x0 / self.dx) + self.grid_size//2])
         if t % 10 == 0:
           ax.clear()
 
@@ -71,7 +71,7 @@ class ElectoMagneticMesh:
 
                 # Отрисовка электрического поля
           ax.imshow(self.Ex, cmap='hot', extent=[self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy], origin='lower')
-          ax.set_title(f"Временной шаг {t}")
+          ax.set_title(f"Время {t * dt}")
           ax.set_xlabel("X (м)")
           ax.set_ylabel("Y (м)")
           ax.axis("equal")
