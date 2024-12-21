@@ -29,7 +29,7 @@ class ElectoMagneticMesh:
   def add_source(self, source: Source):
     self.source = source
     
-  def _calculate_fields(self, dt: float = 0.5):
+  def _calculate_fields(self, dt: float = 0.0025 / (2 * 3e8)):
     for i in range(1, self.grid_size):
         for j in range(1, self.grid_size):
             self.Hz[i, j] += (dt / (mu_0 * self.dx)) * (self.Ey[i, j] - self.Ey[i-1, j]) - \
@@ -47,21 +47,39 @@ class ElectoMagneticMesh:
             
             
   def visualize(self, num_steps: int = 100):
-    for t in tqdm(range(num_steps)):
-      if self.antenna.check_collision:
-        self._collision() # недописанная функция
-      self._calculate_fields()
-      self.Ex[0, 100] += self.source.source_func(t)
-      if t % 10 == 0 and t != 0:
-        plt.figure(figsize=(6, 6))
-        self.antenna.plot_antenna()
-        plt.imshow(self.Ex, cmap='hot', extent=[0, self.grid_size * self.dx, 0, self.grid_size * self.dy])
-        plt.colorbar(label='Ex (V/m)')
-        plt.title(f"Временной шаг {t}")
-        plt.xlabel("X (м)")
-        plt.ylabel("Y (м)")
-        plt.axis("equal")
-        plt.tight_layout()
-        plt.show()
+      fig, ax = plt.subplots(figsize=(6, 6))
+      ax.set_xlim(0, self.grid_size * self.dx)  # Установка масштаба по оси X
+      ax.set_ylim(0, self.grid_size * self.dy)  # Установка масштаба по оси Y
+      ax.set_xlabel("X (м)")
+      ax.set_ylabel("Y (м)")
+      ax.set_title("Электромагнитное поле")
+      ax.axis("equal")
+
+      for t in tqdm(range(num_steps)):
+        if self.antenna and self.antenna.check_collision:
+          self._collision()  # Обработка коллизий с антенной
+        self._calculate_fields()
+          
+        if (t < num_steps / 10):
+          self.Ex[20, 100] += self.source.source_func(t)  # Применение источника
+
+        if t % 10 == 0:
+          ax.clear()
+
+          if self.antenna:
+            self.antenna.plot_antenna(ax=ax)
+
+                # Отрисовка электрического поля
+          ax.imshow(self.Ex, cmap='hot', extent=[self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy], origin='lower')
+          ax.set_title(f"Временной шаг {t}")
+          ax.set_xlabel("X (м)")
+          ax.set_ylabel("Y (м)")
+          ax.axis("equal")
+
+          # Обновление графика
+          plt.draw()
+          plt.pause(0.01)  # Пауза для обновления
+
+      plt.show()
       
       
