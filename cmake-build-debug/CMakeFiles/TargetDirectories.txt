@@ -1,3 +1,0 @@
-/home/ekonst/CLionProjects/bic_simulation/cmake-build-debug/CMakeFiles/bic_simulation.dir
-/home/ekonst/CLionProjects/bic_simulation/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/ekonst/CLionProjects/bic_simulation/cmake-build-debug/CMakeFiles/rebuild_cache.dir
