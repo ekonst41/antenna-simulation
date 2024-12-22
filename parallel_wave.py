@@ -20,4 +20,4 @@ for i in range(grid_size):
 mesh.add_antenna(antenna)
 
 
-mesh.visualize(500)
+mesh.visualize(500, filename="wave_front")

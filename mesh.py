@@ -39,6 +39,8 @@ class ElectoMagneticMesh:
     self.Ey_next = np.zeros((grid_size, grid_size))
     self.Hz_next = np.zeros((grid_size, grid_size))
     
+    self.Ex_max = 0
+    
     self.antenna = antenna
     self.sources = sources
     
@@ -53,20 +55,23 @@ class ElectoMagneticMesh:
 
   def check_inside_antenna(self, x: float, y: float):
     return y < self.antenna.antenna_equation(x)
+  
+  def renew_focus_field(self):
+    self.Ex_max = max(self.Ex_max, self.Ex[int(self.antenna.y0 / self.dy) + int(self.antenna.focal_length / self.dx), int(self.antenna.x0 / self.dx) + self.grid_size//2])
     
   def _calculate_fields(self, dt: float = 0.0025 / (2 * 3e8)):
     for i in range(1, self.grid_size):
-        for j in range(1, self.grid_size):
-            self.Hz_next[i, j] -= (dt  / MU_0) * ((self.Ey[i, j] - self.Ey[i, j - 1]) / self.dx - (self.Ex[i, j] - self.Ex[i - 1, j]) / self.dy)
+      for j in range(1, self.grid_size):
+        self.Hz_next[i, j] -= (dt  / MU_0) * ((self.Ey[i, j] - self.Ey[i, j - 1]) / self.dx - (self.Ex[i, j] - self.Ex[i - 1, j]) / self.dy)
 
     for i in range(self.grid_size - 1):
       for j in range(self.grid_size - 1):
         if self.check_collision((j - self.grid_size//2) * self.dx, i * self.dy):
-          self.Ex_next[i, j] = -1.0 * self.Ey[i, j] * self.antenna.tangent((j - self.grid_size//2) * self.dx)
+          self.Ex[i, j] = -1.0 * self.Ey[i, j] * self.antenna.tangent((j - self.grid_size//2) * self.dx)
           continue
         if self.check_inside_antenna((j - self.grid_size//2) * self.dx, i * self.dy):
-          self.Ex_next[i, j] = 0
-          self.Ey_next[i, j] = 0
+          self.Ex[i, j] = 0
+          self.Ey[i, j] = 0
           continue
         self.Ex_next[i, j] += (dt / EPS_0) * ((self.Hz[i + 1, j] - self.Hz[i, j]) / self.dy)
         self.Ey_next[i, j] -= (dt / EPS_0) * ((self.Hz[i, j + 1] - self.Hz[i, j]) / self.dx)
@@ -75,7 +80,7 @@ class ElectoMagneticMesh:
         self.Ey = np.copy(self.Ey_next)
         self.Hz = np.copy(self.Hz_next)
             
-  def visualize(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8)):
+  def visualize(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8), filename: str = "test"):
     for source in self.sources: 
       self.Ex[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = source.source_func(0)
       self.Hz[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = np.sqrt(EPS_0 / MU_0) * source.source_func(0)
@@ -87,6 +92,8 @@ class ElectoMagneticMesh:
         for source in self.sources:
           self.Ex[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = source.source_func(t * dt)
           self.Hz[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = np.sqrt(EPS_0 / MU_0) * source.source_func(t * dt)
+      else:
+        self.renew_focus_field()
 
       if t % 10 == 0:
         fig, ax = plt.subplots(figsize=(6, 6))
@@ -121,8 +128,7 @@ class ElectoMagneticMesh:
         plt.close()
         frames.append(imageio.imread('temp.png'))
         
-    imageio.mimsave('./visuals/antenna4.gif', frames, duration=0.4)  # duration - время отображения каждого кадра в секундах
+    imageio.mimsave(f'./visuals/{filename}.gif', frames, duration=0.4)
 
-#plt.show()
       
       
