@@ -3,6 +3,7 @@ from mesh import ElectoMagneticMesh, Source
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 
 grid_size = 200
@@ -26,23 +27,32 @@ def field_in_focus(min: float = 0.05, max: float = 1, num: int = 5):
 
     mesh = ElectoMagneticMesh(grid_size, dx, dy, sources=sources)
     mesh.add_antenna(antenna)
-    mesh.visualize(500)
+    #mesh.visualize(500)
+    mesh.calculate(num_steps=500, visualise=True, filename='value_in_focus')
     fields[focus_lenght] = mesh.Ex_max
   return fields
 
-fields = field_in_focus(max=0.4, num=24)
+fields = field_in_focus(max=0.4, num=15)
 
 
 focus_lengths = list(fields.keys())
 field_values = list(fields.values())
 
-# Построение графика
+df = pd.DataFrame({
+  'focus_lengths': focus_lengths,
+  'field_values': field_values,
+})
+
+df.to_csv('data/field_in_focus_005-040.csv', index=False)
+
+
+'''# Построение графика
 plt.figure(figsize=(10, 6))
 plt.plot(focus_lengths, field_values, marker='o', linestyle='-', color='b')
 plt.title('Зависимость поля в фокусе от фокусного расстояния')
 plt.xlabel(r'$ f $')
 plt.ylabel(r'$ E $')
 plt.grid(True)
-plt.show()
+plt.show()'''
 
 

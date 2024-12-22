@@ -14,4 +14,4 @@ mesh = ElectoMagneticMesh(200, 0.0025, 0.0025)
 mesh.add_antenna(antenna)
 mesh.add_source(source)
 
-mesh.visualize(500)
+mesh.calculate(num_steps=500, filename='source_trial')
