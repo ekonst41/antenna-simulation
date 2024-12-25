@@ -33,12 +33,15 @@
 $$
 \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}
 $$
+
 $$
 \nabla \times \mathbf{H} = \frac{\partial \mathbf{D}}{\partial t} + \mathbf{J}
 $$
+
 $$
 \nabla \cdot \mathbf{D} = \rho
 $$
+
 $$
 \nabla \cdot \mathbf{B} = 0
 $$
@@ -74,9 +77,11 @@ $$
 $$
 \frac{\partial E_x}{\partial t} = \frac{1}{\epsilon\epsilon_0} \left( \frac{\partial H_z}{\partial y} \right)
 $$
+
 $$
 \frac{\partial E_y}{\partial t} = \frac{1}{\epsilon\epsilon_0} \left( -\frac{\partial H_z}{\partial x} \right)
 $$
+
 $$
 \frac{\partial H_z}{\partial t} = \frac{1}{\mu\mu_0} \left(\frac{\partial E_x}{\partial y} - \frac{\partial E_y}{\partial x}  \right)
 $$
@@ -96,6 +101,7 @@ $$
 $$
 E_x(t + \Delta t) = E_x(t) + \frac{\Delta t}{\epsilon\epsilon_0 \Delta y} \left( H_z(y + \Delta y) - H_z(y) \right)
 $$
+
 $$
 E_y(t + \Delta t) = E_y(t) - \frac{\Delta t}{\epsilon\epsilon_0 \Delta x} \left( H_z(x + \Delta x) - H_z(x) \right)
 $$
