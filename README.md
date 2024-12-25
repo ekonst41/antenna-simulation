@@ -21,15 +21,18 @@
 - **Диаметр**: $ D $ — определяет размер антенны.
 - **Фокусное расстояние**: $ f $ — расстояние от центра антенны до фокуса.
 - **Геометрическое уравнение**:
+
   $$
   y = \frac{x^2}{4f}
   $$
-  где $x$ — координата вдоль оси антенны, $ y $ — координата вдоль оси вращения.
+
+  где $ x $ — координата вдоль оси антенны, $ y $ — координата вдоль оси вращения.
 
 
 
 ### 2. Электромагнитная волна
 Электромагнитная волна описывается уравнениями Максвелла:
+
 $$
 \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}
 $$
@@ -55,6 +58,7 @@ $$
 - $ \rho $ — плотность заряда.
 
 Для вакуума:
+
 $$
 \mathbf{D} = \epsilon_0 \mathbf{E}, \quad \mathbf{B} = \mu_0 \mathbf{H}
 $$
@@ -74,6 +78,7 @@ $$
 - Магнитное поле: $ \mathbf{H} = (0, 0, H_z) $
 
 Уравнения Максвелла принимают вид:
+
 $$
 \frac{\partial E_x}{\partial t} = \frac{1}{\epsilon\epsilon_0} \left( \frac{\partial H_z}{\partial y} \right)
 $$
@@ -97,7 +102,8 @@ $$
 
 Применяя это к уравнениям Максвелла, получаем:
 
-#### Для электрического поля ($ E_x $ и $ E_y $):
+#### Для электрического поля ( $ E_x $ и $ E_y $ ):
+
 $$
 E_x(t + \Delta t) = E_x(t) + \frac{\Delta t}{\epsilon\epsilon_0 \Delta y} \left( H_z(y + \Delta y) - H_z(y) \right)
 $$
@@ -106,7 +112,7 @@ $$
 E_y(t + \Delta t) = E_y(t) - \frac{\Delta t}{\epsilon\epsilon_0 \Delta x} \left( H_z(x + \Delta x) - H_z(x) \right)
 $$
 
-#### Для магнитного поля ($ H_z $):
+#### Для магнитного поля ( $ H_z $ ):
 $$
 H_z(t + \Delta t) = H_z(t) + \frac{\Delta t}{\mu\mu_0} \left( \frac{E_x(y + \Delta y) - E_x(y)}{\Delta y} - \frac{E_y(x + \Delta x) - E_y(x)}{\Delta x} \right)
 $$
