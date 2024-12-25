@@ -7,8 +7,6 @@ from tqdm import tqdm
 from typing import List
 import imageio.v2 as imageio
 
-frames = []
-
 EPS_0 = 8.854e-12
 MU_0 = 4e-7 * np.pi
 
@@ -43,6 +41,9 @@ class ElectoMagneticMesh:
     
     self.antenna = antenna
     self.sources = sources
+    self.time = []
+    self.max_field_coord = []
+    self.max_field = []
     
   def add_antenna(self, antenna: Antenna):
     self.antenna = antenna
@@ -60,6 +61,14 @@ class ElectoMagneticMesh:
     focus_y = int(self.antenna.y0 / self.dy) + int(self.antenna.focal_length / self.dy)
     focus_x = int(self.antenna.x0 / self.dx) + self.grid_size//2
     self.Ex_max = max(self.Ex_max, (self.Ex[focus_y, focus_x])**2 + (self.Ey[focus_y, focus_x])**2)
+
+  def renew_axe_field(self):
+    I_axe = np.array((self.Ex[:, self.grid_size//2])**2 + (self.Ey[:, self.grid_size//2])**2)
+    self.max_field_coord.append(np.argmax(I_axe) * self.dy)
+    self.max_field.append(np.max(I_axe))
+
+    # self.max_field_coord.append(np.argmax(abs(self.Ex[:self.grid_size//2, self.grid_size//2])) * self.dy)
+
     
   def _calculate_fields(self, dt: float = 0.0025 / (2 * 3e8)):
     for i in range(1, self.grid_size):
@@ -79,6 +88,7 @@ class ElectoMagneticMesh:
         self.Ey[i, j] -= (dt / EPS_0) * ((self.Hz[i, j + 1] - self.Hz[i, j]) / self.dx)
 
   def calculate(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8), visualise: bool = 'False', filename: str = "test"):
+    frames = []
     for source in self.sources:
       self.Ex[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = source.source_func(0)
       self.Hz[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = np.sqrt(EPS_0 / MU_0) * source.source_func(0)
@@ -91,17 +101,19 @@ class ElectoMagneticMesh:
           self.Ex[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = source.source_func(t * dt)
           self.Hz[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = np.sqrt(EPS_0 / MU_0) * source.source_func(t * dt)
       else:
-        self.renew_focus_field()
+        #self.renew_focus_field()
+        self.time.append(t * dt)
+        self.renew_axe_field()
 
       if visualise:
         if t % 10 == 0:
-          self.visualize(t * dt)
+          self.visualize(t * dt, frames)
 
     if visualise:
       imageio.mimsave(f'./visuals/{filename}.gif', frames, duration=0.4)
 
 
-  def visualize(self, t: float):
+  def visualize(self, t: float, frames):
     fig, ax = plt.subplots(figsize=(6, 6))
     ax.set_xlim(0, self.grid_size * self.dx)
     ax.set_ylim(0, self.grid_size * self.dy)
@@ -132,7 +144,7 @@ class ElectoMagneticMesh:
     plt.savefig('temp.png')
     plt.close()
     frames.append(imageio.imread('temp.png'))
-            
+
 '''  def visualize(self, num_steps: int = 100, dt: float = 0.0025 / (2 * 3e8), filename: str = "test"):
     for source in self.sources: 
       self.Ex[int(source.y0 / self.dy), int(source.x0 / self.dx) + self.grid_size//2] = source.source_func(0)
@@ -182,5 +194,5 @@ class ElectoMagneticMesh:
         
     imageio.mimsave(f'./visuals/{filename}.gif', frames, duration=0.4)
 '''
-      
+
       
