@@ -118,7 +118,6 @@ class ElectoMagneticMesh:
         extent = [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, \
           self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy]
         ax.imshow(self.Ex, cmap='hot', vmin = -edge, vmax = edge, extent=extent, origin='lower')
-          # extent= [self.antenna.x0 - self.grid_size * self.dx / 2, self.antenna.x0 + self.grid_size * self.dx / 2, self.antenna.y0, self.antenna.y0 + self.grid_size * self.dy]
         ax.set_title(f"Время {round(t * dt, 10)}")
         ax.set_xlabel("X (м)")
         ax.set_ylabel("Y (м)")
@@ -128,7 +127,7 @@ class ElectoMagneticMesh:
         plt.close()
         frames.append(imageio.imread('temp.png'))
         
-    imageio.mimsave(f'./visuals/{filename}.gif', frames, duration=0.4)
+    imageio.mimsave(f'../visuals/{filename}.gif', frames, duration=0.4)
 
       
       
