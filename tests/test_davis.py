@@ -1,10 +1,12 @@
 from __future__ import division, print_function
+from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 inf = float('inf')
 from math import pi
 from copy import deepcopy
 
+from utils.config_loader import load_config
 import numericalunits as nu
 from physics.modes import find_all_params_from_kx
 from physics.zeros import find_kx
@@ -14,9 +16,7 @@ from utils.checks import check_mode
 from system.optical_system import OpticalSystem
 
 
-EPSILON_GOLD = -21.19 + 0.7361j
-EPSILON_GLASS = 2.310
-EPSILON_MGF2 = 1.891
+CONFIG_PATH = Path(__file__).parent.parent / "config" / "davis.yaml"
             
 def test_davis():
     """
@@ -36,16 +36,17 @@ def test_davis():
     """
     w = 2 * pi * nu.c0 / (780 * nu.nm)
     d_list = [inf, 75 * nu.nm, 10 * nu.nm, 55 * nu.nm, 10 * nu.nm, 75 * nu.nm, inf]
-    ex_list = [EPSILON_GLASS, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_GLASS]
-    ez_list = ex_list
-    mu_list = [1,1,1,1,1,1,1]
-    params = {'w': w,
-              'd_list': d_list,
-              'ex_list': ex_list,
-              'ez_list': ez_list,
-              'mu_list': mu_list}
+#     ex_list = [EPSILON_GLASS, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_GLASS]
+#     ez_list = ex_list
+#     mu_list = [1,1,1,1,1,1,1]
+#     params = {'w': w,
+#               'd_list': d_list,
+#               'ex_list': ex_list,
+#               'ez_list': ez_list,
+#               'mu_list': mu_list}
     
-    params = OpticalSystem(w, d_list, ex_list, ez_list, mu_list)
+#     params = OpticalSystem(w, d_list, ex_list, ez_list, mu_list)
+    params = load_config(CONFIG_PATH)
     
     kx_list = find_kx(params, show_progress=False,
                       search_domain=[-0.05/nu.nm, 0.05/nu.nm, 0, 0.4/nu.nm],
