@@ -11,6 +11,12 @@ from physics.zeros import find_kx
 from physics.fields import calculate_Hy
 from utils.checks import check_mode
 
+from system.optical_system import OpticalSystem
+
+
+EPSILON_GOLD = -21.19 + 0.7361j
+EPSILON_GLASS = 2.310
+EPSILON_MGF2 = 1.891
             
 def test_davis():
     """
@@ -29,11 +35,8 @@ def test_davis():
         None
     """
     w = 2 * pi * nu.c0 / (780 * nu.nm)
-    eps_gold = -21.19 + 0.7361j
-    eps_glass = 2.310
-    eps_MgF2 = 1.891
     d_list = [inf, 75 * nu.nm, 10 * nu.nm, 55 * nu.nm, 10 * nu.nm, 75 * nu.nm, inf]
-    ex_list = [eps_glass, eps_gold, eps_MgF2, eps_gold, eps_MgF2, eps_gold, eps_glass]
+    ex_list = [EPSILON_GLASS, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_GLASS]
     ez_list = ex_list
     mu_list = [1,1,1,1,1,1,1]
     params = {'w': w,
@@ -41,6 +44,9 @@ def test_davis():
               'ex_list': ex_list,
               'ez_list': ez_list,
               'mu_list': mu_list}
+    
+    params = OpticalSystem(w, d_list, ex_list, ez_list, mu_list)
+    
     kx_list = find_kx(params, show_progress=False,
                       search_domain=[-0.05/nu.nm, 0.05/nu.nm, 0, 0.4/nu.nm],
                       grid_points=20, iterations=10, reduction_factor=9,
