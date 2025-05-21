@@ -1,4 +1,4 @@
-Слои параллельны плоскости $x-y$. "Вверх" определяется как направление увеличения $z$. Я рассчитываю поверхностные плазмон-поляритоны (SPP), распространяющиеся вдоль оси $x$, и однородные в направлении $y$ ($k_y = 0$). Общее количество слоёв — $N$, они нумеруются от $0$ до $N-1$, где слои $0$ и $N-1$ имеют бесконечную толщину. Слой $0$ находится внизу ($z \ll 0$), а слой $N-1$ — сверху ($z \gg 0$).
+Слои параллельны плоскости $x-y$. "Вверх" определяется как направление увеличения $z$. Мы рассчитываем поверхностные плазмон-поляритоны (SPP), распространяющиеся вдоль оси $x$, и однородные в направлении $y$ ($k_y = 0$). Общее количество слоёв — $N$, они нумеруются от $0$ до $N-1$, где слои $0$ и $N-1$ имеют бесконечную толщину. Слой $0$ находится внизу ($z \ll 0$), а слой $N-1$ — сверху ($z \gg 0$).
 
 Слой $m$ имеет (AC) диэлектрическую проницаемость $\varepsilon_{xm}$ в направлении $x$ и $\varepsilon_{zm}$ в направлении $z$, а также магнитную проницаемость $\mu_{ym}$. Хотя мы не предполагаем изотропность диэлектрической или магнитной проницаемости, мы предполагаем, что недиагональные элементы, такие как $\varepsilon_{xz}$, равны нулю.
 
@@ -17,9 +17,9 @@ $$
 
 > Если $k_{zm}$ вещественное, то можно выбрать любой знак, это не имеет значения. Единственное место, где это может быть важно — полубесконечные слои, но в этом случае $k_{zm}$ никогда не будет вещественным, иначе волна не будет локализована.
 
-Когда я записываю формулу для $\vec{E}(z)$ или $\vec{H}(z)$, подразумевается, что её нужно умножить на $e^{i k_x x - i \omega t}$ и взять действительную часть.
+Когда мы записываем формулу для $\vec{E}(z)$ или $\vec{H}(z)$, подразумевается, что её нужно умножить на $e^{i k_x x - i \omega t}$ и взять действительную часть.
 
-Обсуждение основано главным образом на $H$-поле, поскольку оно скалярное (направлено по оси $y$), в отличие от электрического поля, которое имеет две компоненты. Иногда я могу использовать обозначение $H(z)$ вместо $H_y(z)$. Для слоя $m$:
+Обсуждение основано главным образом на $H$-поле, поскольку оно скалярное (направлено по оси $y$), в отличие от электрического поля, которое имеет две компоненты. Иногда могут использоваться обозначение $H(z)$ вместо $H_y(z)$. Для слоя $m$:
 
 $$
 H_y(z) = H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} + H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}
@@ -55,13 +55,12 @@ $$
 
 $$
 H_y \stackrel{?}{=} \frac{-i}{\mu_0 \mu_{ym} \omega} \left(\partial_z E_x - \partial_x E_z\right)
-= \frac{H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} \left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right)
-+ \frac{H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} \left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right)
+= \frac{H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} \left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right) + \frac{H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} \left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right)
 $$
 
 ✅ Работает!
 
-### Проверка закона Ампера:
+### Проверка уравнений Максвелла:
 
 $$
 \nabla \times H \stackrel{?}{=} -i \omega (\varepsilon \varepsilon_0) E \;\; \rightarrow \;\; E \stackrel{?}{=} \frac{i}{\omega \varepsilon \varepsilon_0} \nabla \times H
@@ -79,22 +78,19 @@ $$
 
 ✅ Работает!
 
-### Проверка закона Гаусса:
-
 $$
 \nabla \cdot \vec{D} \stackrel{?}{=} 0 \;\; \rightarrow \;\; \varepsilon_x \partial_x E_x + \varepsilon_z \partial_z E_z \stackrel{?}{=} 0
 $$
 
 $$
-0 \stackrel{?}{=} \left( i \varepsilon_{xm} k_x E_{xm\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} + i \varepsilon_{xm} k_x E_{xm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)} \right)
-+ \left( i \varepsilon_{zm} k_{zm} E_{zm\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} - i \varepsilon_{zm} k_{zm} E_{zm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)} \right)
+0 \stackrel{?}{=} \left( i \varepsilon_{xm} k_x E_{xm\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} + i \varepsilon_{xm} k_x E_{xm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)} \right) + \left( i \varepsilon_{zm} k_{zm} E_{zm\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} - i \varepsilon_{zm} k_{zm} E_{zm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)} \right)
 $$
 
 ✅ Работает!
 
 ## Стратегия решения
 
-Я *угадываю* $k_x$. Затем вычисляю все $k_{zm}$. У меня есть $2N-2$ неизвестных (все $H_{m\uparrow}, H_{m\downarrow}$, кроме $H_{0\downarrow}$ и $H_{N-1,\uparrow}$) и $(N-1)$ границ, каждая из которых даёт два уравнения непрерывности ($E_x$ непрерывно и $\varepsilon_z E_z$ непрерывно). Я думаю, что $H_y$ тоже непрерывно, но это избыточно по сравнению с другими двумя. Таким образом, это система линейных уравнений с нетривиальным решением. Существует связанная матрица, определитель которой должен быть равен нулю. Я могу вычислить этот определитель для каждого возможного $k_x$ и использовать его как меру качества для поиска реального решения.
+Угадываем $k_x$. Затем вычисляем все $k_{zm}$. У меня есть $2N-2$ неизвестных (все $H_{m\uparrow}, H_{m\downarrow}$, кроме $H_{0\downarrow}$ и $H_{N-1,\uparrow}$) и $(N-1)$ границ, каждая из которых даёт два уравнения непрерывности ($E_x$ непрерывно и $\varepsilon_z E_z$ непрерывно). Предполагаем, что $H_y$ тоже непрерывно, но это избыточно по сравнению с другими двумя. Таким образом, это система линейных уравнений с нетривиальным решением. Существует связанная матрица, определитель которой должен быть равен нулю. Мы можем вычислить этот определитель для каждого возможного $k_x$ и использовать его как меру качества для поиска реального решения.
 
 ### Непрерывность $E_x$:
 
@@ -153,24 +149,16 @@ $$
 Усреднённый по времени вектор Пойнтинга: $S = \frac{1}{2} E \times H^*$ (см. Jackson (6.132)). Действительная часть $S$ указывает средний поток мощности. Меня интересует только $x$-компонента $S$, $S_x = -(1/2)E_z H_y^*$.
 
 $$
-S_x = -(1/2)E_z H_y^*
-= -(1/2) (\stack{E_{zm\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} \; + \; }{\; + \; E_{zm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}})(\stack{H_{m\uparrow}^* e^{-i k_{zm}^* (z-z_{\text{низ слоя } m})} \; + \; }{\; + \; H_{m\downarrow}^* e^{-i k_{zm}^* (z_{\text{верх слоя } m} - z)}})
+S_x = -(1/2)E_z H_y^*= -\frac{1}{2} (E_{zm\uparrow}e^{ik_{zm}(z-z_\text{низ слоя m})} + E_{zm\downarrow}e^{ik_{zm}(z_\text{верх слоя m} - z)}) (H^*_{zm\uparrow}e^{ik^*_{zm}(z_\text{верх слоя m}-z)} + H^*_{zm\downarrow}e^{ik^*_{zm}(z - z_\text{низ слоя m})}) = 
 $$
 
 $$
-= \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{2}e^{-2 \Im(k_{zm})(z-z_{\text{низ слоя } m})} + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{2}e^{-2 \Im(k_{zm})(z_{\text{верх слоя } m}-z)}
-$$
-
-$$
-+ \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{2} e^{ik_{zm} d_m}e^{-2i\Re(k_{zm})(z-z_{\text{низ слоя } m})} + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{2} e^{ik_{zm} d_m}e^{-2i\Re(k_{zm})(z_{\text{верх слоя } m}-z)}
+= \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{2}e^{-2 Im(k_{zm})(z-z_{\text{низ слоя } m})} + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{2}e^{-2 Im(k_{zm})(z_{\text{верх слоя } m}-z)} + \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{2} e^{ik_{zm} d_m}e^{-2i Re(k_{zm})(z-z_{\text{низ слоя } m})} + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{2} e^{ik_{zm} d_m}e^{-2i Re(k_{zm})(z_{\text{верх слоя } m}-z)}
 $$
 
 Проинтегрируем:
 
 $$
-\int_{z_{\text{низ слоя } m}}^{z_{\text{верх слоя } m}} S_x = \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{4 \Im(k_{zm})}(1-e^{-2\Im(k_{zm})d_m}) + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{4 \Im(k_{zm})}(1-e^{-2\Im(k_{zm})d_m})
+\int_{z_{\text{низ слоя } m}}^{z_{\text{верх слоя } m}} S_x = \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{4 Im(k_{zm})}(1-e^{-2Im(k_{zm})d_m}) + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{4 Im(k_{zm})}(1-e^{-2Im(k_{zm})d_m}) + \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{4iRe(k_{zm})} e^{i k_{zm} d_m} (1 - e^{-2iRe(k_{zm})d_m}) + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{4i Re(k_{zm})} e^{ik_{zm} d_m}(1 - e^{-2i Re(k_{zm})d_m})
 $$
 
-$$
-+ \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{4i\Re(k_{zm})} e^{i k_{zm} d_m} (1 - e^{-2i\Re(k_{zm})d_m}) + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{4i \Re(k_{zm})} e^{ik_{zm} d_m}(1 - e^{-2i\Re(k_{zm})d_m})
-$$
