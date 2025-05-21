@@ -36,17 +36,8 @@ def test_davis():
     """
     w = 2 * pi * nu.c0 / (780 * nu.nm)
     d_list = [inf, 75 * nu.nm, 10 * nu.nm, 55 * nu.nm, 10 * nu.nm, 75 * nu.nm, inf]
-#     ex_list = [EPSILON_GLASS, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_MGF2, EPSILON_GOLD, EPSILON_GLASS]
-#     ez_list = ex_list
-#     mu_list = [1,1,1,1,1,1,1]
-#     params = {'w': w,
-#               'd_list': d_list,
-#               'ex_list': ex_list,
-#               'ez_list': ez_list,
-#               'mu_list': mu_list}
-    
-#     params = OpticalSystem(w, d_list, ex_list, ez_list, mu_list)
-    params = load_config(CONFIG_PATH)
+    params_dict = load_config(CONFIG_PATH)
+    params = OpticalSystem(**params_dict)
     
     kx_list = find_kx(params, show_progress=False,
                       search_domain=[-0.05/nu.nm, 0.05/nu.nm, 0, 0.4/nu.nm],
