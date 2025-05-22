@@ -5,9 +5,7 @@ from physics.modes import find_layer
 import cmath
 from typing import Dict, Optional
 
-inf = float('inf')
-
-__all__ = ['calculate_Hy', 'calculate_Ex', 'calculate_Ez', 'calculate_Sx']
+INF = float('inf')
 
 def calculate_Hy(z: float, params: Dict, x: float = 0, layer: Optional[int] = None):
     """
@@ -38,7 +36,7 @@ def calculate_Hy(z: float, params: Dict, x: float = 0, layer: Optional[int] = No
     kx = params['kx']
 
     layer_bottom = params['layer_bottom_list'][layer_idx]
-    layer_top = inf if layer_idx == N - 1 else params['layer_bottom_list'][layer_idx + 1]
+    layer_top = INF if layer_idx == N - 1 else params['layer_bottom_list'][layer_idx + 1]
 
     up_term = _get_up_term(H_up, kz, z, layer_bottom, x, kx)
     down_term = _get_down_term(H_down, kz, layer_top, z, x, kx)
@@ -47,14 +45,14 @@ def calculate_Hy(z: float, params: Dict, x: float = 0, layer: Optional[int] = No
 
 
 def _get_up_term(amplitude, kz, z, bottom, x, kx):
-    """Вспомогательная функция для верхней компоненты."""
+    """Вспомогательная функция для расчета верхней компоненты."""
     if amplitude == 0:
         return 0
     return amplitude * cmath.exp(1j * kz * (z - bottom) + 1j * kx * x)
 
 
 def _get_down_term(amplitude, kz, top, z, x, kx):
-    """Вспомогательная функция для нижней компоненты."""
+    """Вспомогательная функция для расчета нижней компоненты."""
     if amplitude == 0:
         return 0
     return amplitude * cmath.exp(1j * kz * (top - z) + 1j * kx * x)
@@ -87,7 +85,7 @@ def calculate_Ex(z: float, params: Dict, x: float = 0, layer: Optional[int] =Non
     kx = params['kx']
 
     layer_bottom = params['layer_bottom_list'][layer_idx]
-    layer_top = inf if layer_idx == N - 1 else params['layer_bottom_list'][layer_idx + 1]
+    layer_top = INF if layer_idx == N - 1 else params['layer_bottom_list'][layer_idx + 1]
 
     up_term = _get_up_term(Ex_up, kz, z, layer_bottom, x, kx)
     down_term = _get_down_term(Ex_down, kz, layer_top, z, x, kx)
@@ -119,7 +117,7 @@ def calculate_Ez(z: float, params: Dict, x: float = 0, layer: Optional[int] = No
     kx = params['kx']
 
     layer_bottom = params['layer_bottom_list'][layer_idx]
-    layer_top = inf if layer_idx == N - 1 else params['layer_bottom_list'][layer_idx + 1]
+    layer_top = INF if layer_idx == N - 1 else params['layer_bottom_list'][layer_idx + 1]
 
     up_term = _get_up_term(Ez_up, kz, z, layer_bottom, x, kx)
     down_term = _get_down_term(Ez_down, kz, layer_top, z, x, kx)

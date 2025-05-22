@@ -3,7 +3,7 @@ import numpy as np
 import cmath
 import numericalunits as nu
 
-inf = float('inf')
+INF = float('inf')
 
 def bc_matrix(params):
     """
@@ -26,7 +26,7 @@ def bc_matrix(params):
     N = len(d_list)
     assert N == len(d_list) == len(ex_list) == len(ez_list) == len(kz_list)
     assert N >= 2
-    assert d_list[0] == d_list[-1] == inf
+    assert d_list[0] == d_list[-1] == INF
     
     # delta = e^{i * kz * d}, i.e. phase change across each layer
     # delta[0] and delta[-1] are undefined and are not used.

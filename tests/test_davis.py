@@ -2,19 +2,18 @@ from __future__ import division, print_function
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
-inf = float('inf')
 from math import pi
 from copy import deepcopy
 
 from utils.config_loader import load_config
 import numericalunits as nu
 from physics.modes import find_all_params_from_kx
-from physics.zeros import find_kx
+# from physics.zeros import find_kx
+from physics.zeros import ModeFinder
 from physics.fields import calculate_Hy
 from utils.checks import check_mode
 
 from system.optical_system import OpticalSystem
-
 
 CONFIG_PATH = Path(__file__).parent.parent / "config" / "davis.yaml"
             
@@ -34,12 +33,11 @@ def test_davis():
     Returns:
         None
     """
-    w = 2 * pi * nu.c0 / (780 * nu.nm)
-    d_list = [inf, 75 * nu.nm, 10 * nu.nm, 55 * nu.nm, 10 * nu.nm, 75 * nu.nm, inf]
     params_dict = load_config(CONFIG_PATH)
     params = OpticalSystem(**params_dict)
     
-    kx_list = find_kx(params, show_progress=False,
+    finder = ModeFinder()
+    kx_list = finder.find_kx_modes(params, show_progress=False,
                       search_domain=[-0.05/nu.nm, 0.05/nu.nm, 0, 0.4/nu.nm],
                       grid_points=20, iterations=10, reduction_factor=9,
                       plot_full_region=True)
@@ -69,7 +67,7 @@ def test_davis():
     print('using a larger number for grid_points would also work here.)')
     print('---')
 
-    kx_list2 = find_kx(params, show_progress=False,
+    kx_list2 = finder.find_kx_modes(params, show_progress=False,
                       search_domain=[-0.05/nu.nm, 0.05/nu.nm, 0, 0.1/nu.nm],
                       grid_points=20, iterations=10, reduction_factor=9,
                       plot_full_region=True)
