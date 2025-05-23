@@ -1,0 +1,38 @@
+system:
+  w: 780 nm
+  layers:
+    - name: glass_top
+      thickness: inf
+      ex: 2.310
+      ez: 2.310
+      mu: 1
+    - name: Au_1
+      thickness: 75
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: MgF2_1
+      thickness: 10
+      ex: 1.891
+      ez: 1.891
+      mu: 1
+    - name: Au_2
+      thickness: 55
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: MgF2_2
+      thickness: 10
+      ex: 1.891
+      ez: 1.891
+      mu: 1
+    - name: Au_3
+      thickness: 75
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: glass_bottom
+      thickness: inf
+      ex: 2.310
+      ez: 2.310
+      mu: 1
