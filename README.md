@@ -10,14 +10,15 @@
 $k_x$ — комплексное волновое число в плоскости. Мы заранее не знаем его значение; его нужно определить.
 
 **TM поляризация**
+
 $$
 \mathbf{E}(x,z,t) = \mathbf{E}(z) e^{i(k_x x - \omega t)}, \quad \mathbf{H}(x,z,t) = \mathbf{H}(z) e^{i(k_x x - \omega t)}
 $$
 
 Из уравнений Максвелла (в частных производных):
 
-1. $ \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t} $
-2. $ \nabla \times \mathbf{H} = \frac{\partial \mathbf{D}}{\partial t} $
+1. $\nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}$
+2. $\nabla \times \mathbf{H} = \frac{\partial \mathbf{D}}{\partial t}$
 
 Для TM-моды, используя эти уравнения, можно получить:
 
@@ -39,6 +40,7 @@ $$
 $$
 
 Упрощаем:
+
 $$
 k_z^2 = \mu_0 \mu_{ym} \varepsilon_0 \varepsilon_{xm} \omega^2 + k_x^2
 $$
