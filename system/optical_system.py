@@ -2,11 +2,11 @@ from typing import List, Any
 
 from copy import deepcopy
 
-class OpticalSystem:
+class OpticalSystemConfig:
     def __init__(self, w: float, d_list: List[float], ex_list: List[complex],
                  ez_list: List[complex], mu_list: List[complex]=None):
         """
-        Определяет многослойную оптическую систему для моделирования поверхностных мод.
+        Определяет изначальную конфигурацию системы.
 
         Args:
             w (float): угловая частота (рад/с)
@@ -30,24 +30,67 @@ class OpticalSystem:
         for i in range(1, self.N - 1):
             self.layer_bottom_list.append(self.layer_bottom_list[-1] + self.d_list[i])
             
-        # === Динамически добавляемые поля ===
-        self.kx = None
-        self.kz_list = None
-        self.H_up_list = []
-        self.H_down_list = []
-        self.Ex_up_list = []
-        self.Ex_down_list = []
-        self.Ez_up_list = []
-        self.Ez_down_list = []
-        self.Sx_list = []
-        self.Sx_total = None
+        
+    def __getitem__(self, key: str) -> Any:
+        if hasattr(self, key):
+            return getattr(self, key)
+        else: 
+            raise KeyError(f"У OpticalSystemConfig нет поля {key}")
+        
+    def __setitem__(self, key: str, value: Any):
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            raise KeyError(f"У OpticalSystemConfig нет поля {key}")
+        
+class OpticalState:
+    def __init__(self, kx=None, kz_list=None, H_up_list=[], H_down_list=[],
+                 Ex_up_list=[], Ex_down_list=[], Ez_up_list=[], Ez_down_list=[],
+                 Sx_list=[], Sx_total=None):
+        self.kx = kx
+        self.kz_list = kz_list
+        self.H_up_list = H_up_list
+        self.H_down_list = H_down_list
+        self.Ex_up_list = Ex_up_list
+        self.Ex_down_list = Ex_down_list
+        self.Ez_up_list = Ez_up_list
+        self.Ez_down_list = Ez_down_list
+        self.Sx_list = Sx_list
+        self.Sx_total = Sx_total
+        
+    def __getitem__(self, key: str) -> Any:
+        if hasattr(self, key):
+            return getattr(self, key)
+        else: 
+            raise KeyError(f"У OpticalState нет поля {key}")
+        
+    def __setitem__(self, key: str, value: Any):
+        if hasattr(self, key):
+            setattr(self, key, value)
+        else:
+            raise KeyError(f"У OpticalState нет поля {key}")
+
+class OpticalSystem:
+    def __init__(self, config: OpticalSystemConfig, state: OpticalState=None):
+        """
+        Определяет многослойную оптическую систему для моделирования поверхностных мод.
+
+        Args:
+            config (OpticalSystemConfig): изначальная конфигурация системы
+            state (OpticalState): состояение полей в ситемы
+        """
+        assert config is not None
+        self.config = config
+        self.state = state if state else OpticalState()
         
     def __getitem__(self, key: str) -> Any:
         """
         Позволяет получать параметры через system['w'], system['d_list'] и т.д.
         """
-        if hasattr(self, key):
-            return getattr(self, key)
+        if hasattr(self.config, key):
+            return getattr(self.config, key)
+        elif hasattr(self.state, key):
+            return getattr(self.state, key)
         else: 
             raise KeyError(f"У OpticalSystem нет поля {key}")
         
@@ -55,8 +98,10 @@ class OpticalSystem:
         """
         Позволяет устанавливать параметры через system['w'] = ...
         """
-        if hasattr(self, key):
-            setattr(self, key, value)
+        if hasattr(self.config, key):
+            setattr(self.config, key, value)
+        elif hasattr(self.state, key):
+            setattr(self.state, key, value)
         else:
             raise KeyError(f"У OpticalSystem нет поля {key}")
         
@@ -65,24 +110,9 @@ class OpticalSystem:
         Возвращает глубокую копию текущего объекта OpticalSystem.
         """
         copied = OpticalSystem(
-            w=self.w,
-            d_list=deepcopy(self.d_list),
-            ex_list=deepcopy(self.ex_list),
-            ez_list=deepcopy(self.ez_list),
-            mu_list=deepcopy(self.mu_list)
+            config=deepcopy(self.config),
+            state=deepcopy(self.state)
         )
-        copied.kz_list = deepcopy(self.kz_list)
-        copied.layer_bottom_list = deepcopy(self.layer_bottom_list)
-
-        copied.H_up_list = deepcopy(self.H_up_list)
-        copied.H_down_list = deepcopy(self.H_down_list)
-        copied.Ex_up_list = deepcopy(self.Ex_up_list)
-        copied.Ex_down_list = deepcopy(self.Ex_down_list)
-        copied.Ez_up_list = deepcopy(self.Ez_up_list)
-        copied.Ez_down_list = deepcopy(self.Ez_down_list)
-        copied.Sx_list = deepcopy(self.Sx_list)
-        copied.Sx_total = deepcopy(self.Sx_total)
-
         return copied
     
     def update(self, data: dict):
@@ -96,8 +126,10 @@ class OpticalSystem:
             KeyError: если передан ключ, которого нет в классе
         """
         for key, value in data.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
+            if hasattr(self.config, key):
+                setattr(self.config, key, value)
+            elif hasattr(self.state, key):
+                setattr(self.state, key, value)
             else:
                 raise KeyError(f"У OpticalSystem нет поля {key}")
         return self

@@ -13,7 +13,7 @@ from physics.zeros import ModeFinder
 from physics.fields import calculate_Hy
 from utils.checks import check_mode
 
-from system.optical_system import OpticalSystem
+from system.optical_system import OpticalSystemConfig, OpticalState, OpticalSystem
 
 CONFIG_PATH = Path(__file__).parent.parent / "config" / "davis.yaml"
             
@@ -34,8 +34,10 @@ def test_davis():
         None
     """
     params_dict = load_config(CONFIG_PATH)
-    params = OpticalSystem(**params_dict)
-    
+    config = OpticalSystemConfig(**params_dict)
+
+    params = OpticalSystem(config=config)
+        
     finder = ModeFinder()
     kx_list = finder.find_kx_modes(params, show_progress=False,
                       search_domain=[-0.05/nu.nm, 0.05/nu.nm, 0, 0.4/nu.nm],
@@ -86,11 +88,12 @@ def test_davis():
         
         new_params = deepcopy(params)
         new_params['kx'] = my_kx
-        new_params = find_all_params_from_kx(new_params)
+        out = find_all_params_from_kx(new_params)
+        print(out)
         plt.figure()
         plt.title('"Mode ' + str(i+1) + '" in Davis paper -- Plot of Re(Hy) and Im(Hy)')
         zs = np.linspace(-300 * nu.nm, 500 * nu.nm, num=400)
-        Hs = np.array([calculate_Hy(z, new_params) for z in zs])
+        Hs = np.array([calculate_Hy(z, out) for z in zs])
         plt.plot(zs / nu.nm, Hs.real / max(abs(Hs)),
                  zs / nu.nm, Hs.imag / max(abs(Hs)))
         plt.xlabel('z (nm)')
