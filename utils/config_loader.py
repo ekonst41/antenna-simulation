@@ -2,6 +2,7 @@ import yaml
 import numericalunits as nu
 from math import pi
 import re
+from system.layer import Layer
 
 def _parse_complex(value):
     """Парсит комплексное число из строки в формате 'a + bj' или 'a + bj'"""
@@ -37,6 +38,7 @@ def load_config(config_path):
         data = yaml.full_load(f)
 
     config = data['system']
+    layers = []
     N = len(config['layers'])
 
     w_parts = config['w'].split()
@@ -48,28 +50,14 @@ def load_config(config_path):
     else:
         raise ValueError("Поддерживаемые единицы для длины волны: nm, um")
 
-    d_list = []
-    ex_list = []
-    ez_list = []
-    mu_list = []
+    for layer_data in config['layers']:
+        layer = Layer(
+            name=layer_data['name'],
+            thickness=layer_data['thickness'],
+            ex=_parse_complex(layer_data['ex']),
+            ez=_parse_complex(layer_data.get('ez', layer_data['ex'])),
+            mu=layer_data.get('mu', 1.0)
+        )
+        layers.append(layer)
 
-    for layer in config['layers']:
-        thickness = layer.get('thickness', 'inf')
-        d = float('inf') if isinstance(thickness, str) and thickness.lower() == 'inf' else thickness * nu.nm
-        
-        ex = _parse_complex(layer['ex'])
-        ez = _parse_complex(layer.get('ez', ex))
-        mu = layer.get('mu', 1)
-
-        d_list.append(d)
-        ex_list.append(ex)
-        ez_list.append(ez)
-        mu_list.append(mu)
-
-    return {
-        'w': w,
-        'd_list': d_list,
-        'ex_list': ex_list,
-        'ez_list': ez_list,
-        'mu_list': mu_list
-    }
+    return {'w': w, 'layers': layers}
