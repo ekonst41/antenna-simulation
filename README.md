@@ -49,11 +49,12 @@ $$
 \nabla \cdot \mathbf{D} = 0 \Rightarrow \frac{\partial}{\partial x} (\varepsilon_{xm} E_x) + \frac{\partial}{\partial z} (\varepsilon_{zm} E_z) = 0
 $$
 
-Подставляем выражения для $ E_x $ и $ E_z $ через $ H_y $:
+Подставляем выражения для $E_x$ и $E_z$ через $H_y$:
 
 $$
 k_{zm} = \pm \sqrt{\omega^2 \mu_{ym} \varepsilon_{xm} / c^2 - (\varepsilon_{xm} / \varepsilon_{zm}) k_x^2}
 $$
+
 (выбираем корень с неотрицательной мнимой частью)
 
 > Если $k_{zm}$ вещественное, то можно выбрать любой знак, это не имеет значения. Единственное место, где это может быть важно — полубесконечные слои, но в этом случае $k_{zm}$ никогда не будет вещественным, иначе волна не будет локализована.
@@ -89,6 +90,7 @@ $$
 (при этом $X_{m\uparrow}=0$ в слое $0$ (нет нижней границы) и $X_{m\downarrow}=0$ в слое $N-1$ (нет верхней границы)). $X_{m\uparrow}$ описывает компоненту, затухающую при увеличении $z$, а $X_{m\downarrow}$ — при уменьшении $z$.
 
 Проверим, что полученные выше уравнения не нарушают уравнения Максвелла
+
 $$
 -i\omega (\mu_y \mu_0 H) = \partial_t B \stackrel{?}{=} -\nabla \times E \;\; \rightarrow \;\; H \stackrel{?}{=} (-i/\mu_0\mu_y\omega)\nabla \times E
 $$
@@ -98,7 +100,7 @@ H_y \stackrel{?}{=} \frac{-i}{\mu_0 \mu_{ym} \omega} \left(\partial_z E_x - \par
 = \frac{H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} \left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right) + \frac{H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} \left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right)
 $$
 
-✅ Работает!
+✅ Работает! - поздравляю!
 
 $$
 \nabla \times H \stackrel{?}{=} -i \omega (\varepsilon \varepsilon_0) E \;\; \rightarrow \;\; E \stackrel{?}{=} \frac{i}{\omega \varepsilon \varepsilon_0} \nabla \times H
@@ -183,9 +185,11 @@ $$
 (Горизонтальная линия разделяет уравнения для $E_x$ и $E_z$.)
 
 Чтобы система имела нетривиальное решение, необходимо выполнение условия:
+
 $$
 det(M(k_x))=0
 $$
+
 Таким образом, задача сводится к поиску комплексного $k_x$, обращающего определитель матрицы $M(k_x)$ в ноль.
 Это так называемый [Transfer Matrix Method](https://en.wikipedia.org/wiki/Transfer-matrix_method_(optics))
 
@@ -195,6 +199,7 @@ $$
 - Минимизируем ошибку, то есть модуль детерминанта
 
 ## Вектор Пойнтинга
+
 $$
 \mathbf{S}(z, t) = \mathbf{E}(z, t) \times \mathbf{H}(z, t)
 $$
@@ -261,6 +266,7 @@ $$
 $$
 
 Проинтегрируем:
+
 $$
 \int_{z_{\text{низ слоя } m}}^{z_{\text{верх слоя } m}} S_x = \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{4 Im(k_{zm})}(1-e^{-2Im(k_{zm})d_m}) + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{4 Im(k_{zm})}(1-e^{-2Im(k_{zm})d_m}) + \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{4iRe(k_{zm})} e^{i k_{zm} d_m} (1 - e^{-2iRe(k_{zm})d_m}) + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{4i Re(k_{zm})} e^{ik_{zm} d_m}(1 - e^{-2i Re(k_{zm})d_m})
 $$
