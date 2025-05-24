@@ -190,7 +190,6 @@ def find_all_params_from_kx(params):
     for i in range(1, N - 1):
         layer_bottom_list.append(layer_bottom_list[-1] + d_list[i])
 
-    new_params['layer_bottom_list'] = layer_bottom_list
     return new_params
 
 def find_layer(z, params):
