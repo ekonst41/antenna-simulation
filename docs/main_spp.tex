@@ -1,0 +1,514 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{physics}
+\usepackage{mathtools}
+
+\title{Поверхностные плазмон-поляритоны в многослойных структурах}
+
+\begin{document}
+
+\maketitle
+
+\section{Введение}
+Поверхностные плазмон-поляритоны (ППП, SPP) - это электромагнитные волны, распространяющиеся в приграничном слое на стыке металла и диэлектрика (хотя, вообще говоря, достаточно и простого контраста диэлектрических проницаемостей, при котором $\epsilon_1 \epsilon_2<0$). Их возникновение обусловлено взаимодействием ЭМ-поля в диэлектрике с электронной плазмой металла. Простейшей системой, в которой может возникнуть поверхностный плазмонполяритон, как раз является плоская граница раздела диэлектрика ($z > 0$, $\epsilon= \epsilon_2$) и металла ($z <0$, $\epsilon= \epsilon_1(\omega)$).
+
+\section{Физическая модель}
+\subsection{Геометрия системы}
+Рассмотрим N-слойную структуру, где каждый слой параллелен плоскости $x-y$ (Рис. \ref{fig:system}). Слои нумеруются от 0 до N-1, причем слои 0 и N-1 считаются полубесконечными:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{SPP_coordinates.jpg}
+\caption{Схематическое изображение двуслойной системы с поверхностным плазмон-поляритоном}
+\label{fig:system}
+\end{figure}
+
+\subsection{Параметры сред}
+Каждый слой $m$ характеризуется:
+\begin{itemize}
+\item Тензором диэлектрической проницаемости:
+$\hat{\varepsilon}_m = \begin{pmatrix}
+\varepsilon_{xm} & 0 & 0 \\
+0 & \varepsilon_{ym} & 0 \\
+0 & 0 & \varepsilon_{zm}
+\end{pmatrix}$ (среды анизотропны)
+
+\item Магнитной проницаемостью $\mu_{ym}$
+\end{itemize}
+
+\section{Теория ППП в TM-поляризации}
+
+Рассмотрим границу раздела двух сред, где одна из них (например, металл) обладает **анизотропной диэлектрической проницаемостью**:
+
+\[
+\hat{\epsilon}_1 = \begin{pmatrix}
+\epsilon_{x1} & 0 & 0 \\
+0 & \epsilon_{x1} & 0 \\
+0 & 0 & \epsilon_{z1}
+\end{pmatrix}, \quad \mu_1 = \mu_1,
+\]
+
+а вторая среда (диэлектрик) — изотропна (\(\epsilon_2, \mu_2\)).
+
+Поля ищем в виде:
+
+\[
+\mathbf{E}(x,z,t) = \mathbf{E}(z) e^{i(k_x x - \omega t)}, \quad \mathbf{H}(x,z,t) = \mathbf{H}(z) e^{i(k_x x - \omega t)},
+\]
+
+где для TM-поляризации:
+
+\[
+\mathbf{E} = (E_x, 0, E_z), \quad \mathbf{H} = (0, H_y, 0).
+\]
+
+Из уравнений Максвелла \(\nabla \times \mathbf{E} = -i\omega \mu_0 \mu_1 \mathbf{H}\) и \(\nabla \times \mathbf{H} = i\omega \epsilon_0 \hat{\epsilon}_1 \mathbf{E}\) получаем:
+
+\[
+\frac{\partial E_z}{\partial x} - \frac{\partial E_x}{\partial z} = -i\omega \mu_0 \mu_1 H_y, \quad
+\]
+
+\[
+\frac{\partial H_y}{\partial z} = i\omega \epsilon_0 \epsilon_{x1} E_x, \quad 
+\]
+
+\[
+-\frac{\partial H_y}{\partial x} = i\omega \epsilon_0 \epsilon_{z1} E_z. \quad 
+\]
+Из формул выше получаем:
+\[
+E_z = -\frac{k_x}{\omega \epsilon_0 \epsilon_{z1}} H_y. \quad (4)
+\]
+
+
+\[
+E_x = \frac{1}{i\omega \epsilon_0 \epsilon_{x1}} \frac{\partial H_y}{\partial z}. \quad (5)
+\]
+
+Подставляем в исходное уравнение Максвелла:
+
+\[
+ik_x \left(-\frac{k_x}{\omega \epsilon_0 \epsilon_{z1}} H_y\right) - \frac{\partial}{\partial z} \left(\frac{1}{i\omega \epsilon_0 \epsilon_{x1}} \frac{\partial H_y}{\partial z}\right) = -i\omega \mu_0 \mu_1 H_y.
+\]
+
+Упрощаем:
+
+\[
+-\frac{k_x^2}{\omega \epsilon_0 \epsilon_{z1}} H_y - \frac{1}{i\omega \epsilon_0 \epsilon_{x1}} \frac{\partial^2 H_y}{\partial z^2} = -i\omega \mu_0 \mu_1 H_y.
+\]
+
+Умножаем на \(i\omega \epsilon_0 \epsilon_{x1}\):
+
+\[
+-i \frac{\epsilon_{x1}}{\epsilon_{z1}} k_x^2 H_y - \frac{\partial^2 H_y}{\partial z^2} = \omega^2 \epsilon_0 \mu_0 \epsilon_{x1} \mu_1 H_y.
+\]
+
+Переносим все члены влево:
+
+\[
+\frac{\partial^2 H_y}{\partial z^2} + \left(\omega^2 \epsilon_0 \mu_0 \epsilon_{x1} \mu_1 - \frac{\epsilon_{x1}}{\epsilon_{z1}} k_x^2\right) H_y = 0.
+\]
+
+Ищем решение в виде \(H_y(z) \propto e^{i k_{z1} z}\) (в металле) и \(H_y(z) \propto e^{-k_{z2} z}\) (в диэлектрике). Подставляя, получаем:
+
+\[
+-k_{z1}^2 + \omega^2 \epsilon_0 \mu_0 \epsilon_{x1} \mu_1 - \frac{\epsilon_{x1}}{\epsilon_{z1}} k_x^2 = 0.
+\]
+
+Отсюда:
+
+\[
+k_{z1}^2 = \omega^2 \epsilon_0 \mu_0 \epsilon_{x1} \mu_1 - \frac{\epsilon_{x1}}{\epsilon_{z1}} k_x^2.
+\]
+
+То есть для $m$-ого слоя получаем требуемое соотношение:
+
+\[
+k_{zm}^2 = \omega^2 \epsilon_0 \mu_0 \epsilon_{xm} \mu_1 - \frac{\epsilon_{xm}}{\epsilon_{zm}} k_x^2.
+\]
+
+Решение для $k_{zm}$:
+\begin{equation}
+k_{zm} = \pm \sqrt{\omega^2 \mu_{ym} \varepsilon_{xm} / c^2 - (\varepsilon_{xm} / \varepsilon_{zm}) k_x^2}
+\end{equation}
+
+(выбираем корень с неотрицательной мнимой частью)
+
+Если $k_{zm}$ вещественное, то можно выбрать любой знак, это не имеет значения. Единственное место, где это может быть важно — полубесконечные слои, но в этом случае $k_{zm}$ никогда не будет вещественным, иначе волна не будет локализована.
+
+\section{Решение для многослойной системы}
+
+Когда мы записываем формулу для $\vec{E}(z)$ или $\vec{H}(z)$, подразумевается, что её нужно умножить на $e^{i k_x x - i \omega t}$ и взять действительную часть.
+
+Обсуждение основано главным образом на $H$-поле, поскольку оно скалярное (направлено по оси $y$), в отличие от электрического поля, которое имеет две компоненты. Иногда могут использоваться обозначение $H(z)$ вместо $H_y(z)$. 
+
+\subsection{Общий вид полей}
+В каждом слое $m$:
+\begin{align}
+H_y(z) &= H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ}})} + H_{m\downarrow} e^{i k_{zm} (z_{\text{верх}}-z)} \\
+E_x(z) &= \frac{H_{m\uparrow} k_{zm}}{\omega \varepsilon_{xm} \varepsilon_0} e^{i k_{zm} (z-z_{\text{низ}})} - \frac{H_{m\downarrow} k_{zm}}{\omega \varepsilon_{xm} \varepsilon_0} e^{i k_{zm} (z_{\text{верх}}-z)} \\
+E_z(z) &= -\frac{H_{m\uparrow} k_x}{\omega \varepsilon_{zm} \varepsilon_0} e^{i k_{zm} (z-z_{\text{низ}})} - \frac{H_{m\downarrow} k_x}{\omega \varepsilon_{zm} \varepsilon_0} e^{i k_{zm} (z_{\text{верх}}-z)}
+\end{align}
+
+где
+
+$$
+E_{xm\uparrow} = \frac{H_{m\uparrow} k_{zm}}{\omega \varepsilon_{xm} \varepsilon_0}, \quad
+E_{xm\downarrow} = -\frac{H_{m\downarrow} k_{zm}}{\omega \varepsilon_{xm} \varepsilon_0}
+$$
+
+$$
+E_{zm\uparrow} = -\frac{H_{m\uparrow} k_x}{\omega \varepsilon_{zm} \varepsilon_0}, \quad
+E_{zm\downarrow} = -\frac{H_{m\downarrow} k_x}{\omega \varepsilon_{zm} \varepsilon_0}
+$$
+
+(при этом $X_{m\uparrow}=0$ в слое $0$ (нет нижней границы) и $X_{m\downarrow}=0$ в слое $N-1$ (нет верхней границы)). $X_{m\uparrow}$ описывает компоненту, затухающую при увеличении $z$, а $X_{m\downarrow}$ — при уменьшении $z$.
+
+\subsection{Проверка уравнений}
+
+Проверим, что полученные выше уравнения не нарушают уравнения Максвелла
+$$
+-i\omega (\mu_y \mu_0 H) = \partial_t B \stackrel{?}{=} -\nabla \times E \;\; \rightarrow \;\; H \stackrel{?}{=} (-i/\mu_0\mu_y\omega)\nabla \times E
+$$
+
+\begin{equation}
+\begin{aligned}
+H_y \stackrel{?}{=} & \frac{-i}{\mu_0 \mu_{ym} \omega} \left(\partial_z E_x - \partial_x E_z\right) \\
+= & \frac{H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} 
+\left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right) \\
+& + \frac{H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}}{\mu_0 \mu_{ym} \omega^2 \varepsilon_0} 
+\left(\frac{k_{zm}^2}{\varepsilon_{xm}} + \frac{k_x^2}{\varepsilon_{zm}}\right)
+\end{aligned}
+\end{equation}
+
+✅ Работает!
+
+$$
+\nabla \times H \stackrel{?}{=} -i \omega (\varepsilon \varepsilon_0) E \;\; \rightarrow \;\; E \stackrel{?}{=} \frac{i}{\omega \varepsilon \varepsilon_0} \nabla \times H
+$$
+
+$$
+E_z \stackrel{?}{=} \frac{i}{\omega \varepsilon_{zm} \varepsilon_0} \partial_x H_y
+= \frac{i}{\omega \varepsilon_{zm} \varepsilon_0} \left( i k_x H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} + i k_x H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}\right)
+$$
+
+$$
+E_x \stackrel{?}{=} \frac{-i}{\omega \varepsilon_{xm} \varepsilon_0} \partial_z H_y
+= \frac{-i}{\omega \varepsilon_{xm} \varepsilon_0} \left( i k_{zm} H_{m\uparrow} e^{i k_{zm} (z-z_{\text{низ слоя } m})} - i k_{zm} H_{m\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}\right)
+$$
+
+Работает!
+
+$$
+\nabla \cdot \vec{D} \stackrel{?}{=} 0 \;\; \rightarrow \;\; \varepsilon_x \partial_x E_x + \varepsilon_z \partial_z E_z \stackrel{?}{=} 0
+$$
+
+\begin{equation}
+\begin{aligned}
+0 \stackrel{?}{=} &\; i \varepsilon_{xm} k_x E_{xm\uparrow} e^{i k_{zm} (z - z_{\text{низ слоя } m})} 
++ i \varepsilon_{xm} k_x E_{xm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)} \\
+&+ i \varepsilon_{zm} k_{zm} E_{zm\uparrow} e^{i k_{zm} (z - z_{\text{низ слоя } m})} 
+- i \varepsilon_{zm} k_{zm} E_{zm\downarrow} e^{i k_{zm} (z_{\text{верх слоя } m} - z)}.
+\end{aligned}
+\end{equation}
+
+Работает!
+
+
+\subsection{Стратегия решения}
+Угадываем $k_x$. Затем вычисляем все $k_{zm}$. У нас есть $2N-2$ неизвестных (все $H_{m\uparrow}, H_{m\downarrow}$, кроме $H_{0\downarrow}$ и $H_{N-1,\uparrow}$) и $(N-1)$ границ, каждая из которых даёт два уравнения непрерывности ($E_x$ непрерывно и $\varepsilon_z E_z$ непрерывно). Предполагаем, что $H_y$ тоже непрерывно, но это избыточно по сравнению с другими двумя. Таким образом, это система линейных уравнений с нетривиальным решением. Существует связанная матрица, определитель которой должен быть равен нулю. Мы можем вычислить этот определитель для каждого возможного $k_x$ и использовать его как меру качества для поиска реального решения.
+
+
+Непрерывность $E_x$:
+
+$$
+E_{x0\downarrow} = E_{x1\uparrow} + E_{x1\downarrow} e^{i k_{z1} d_1}
+$$
+
+$$
+E_{x1\uparrow} e^{i k_{z1} d_1} + E_{x1\downarrow} = E_{x2\uparrow} + E_{x2\downarrow} e^{i k_{z2} d_2}
+$$
+
+$$
+\cdots
+$$
+
+$$
+E_{x(N-2)\uparrow} e^{i k_{z(N-2)} d_{(N-2)}} + E_{x(N-2)\downarrow} = E_{x(N-1)\uparrow}
+$$
+
+Непрерывность $\varepsilon_z E_z$:
+
+$$
+\varepsilon_{z0} E_{z0\downarrow} = \varepsilon_{z1} E_{z1\uparrow} + \varepsilon_{z1} E_{z1\downarrow} e^{i k_{z1} d_1}
+$$
+
+$$
+\varepsilon_{z1} E_{z1\uparrow} e^{i k_{z1} d_1} + \varepsilon_{z1} E_{z1\downarrow} = \varepsilon_{z2} E_{z2\uparrow} + \varepsilon_{z2} E_{z2\downarrow} e^{i k_{z2} d_2}
+$$
+
+$$
+\cdots
+$$
+
+$$
+\varepsilon_{z(N-1)} E_{z(N-2)\uparrow} e^{i k_{z(N-2)} d_{(N-2)}} + \varepsilon_{z(N-2)} E_{z(N-2)\downarrow} = \varepsilon_{z(N-1)} E_{z(N-1)\uparrow}
+$$
+
+\section{Метод матриц переноса}
+Запишем это в виде матрицы, это так называемый  \href{https://en.wikipedia.org/wiki/Transfer-matrix_method_ (optics)}{Transfer Matrix Method}. Он используется для система с паралельными разделами слоев. В нем переход между слоями определяется матрциами:
+
+\[
+\left( \begin{array}{c}
+E(z+L) \\ 
+H(z+L)
+\end{array} \right) 
+= M \cdot 
+\left( \begin{array}{c}
+E(z) \\ 
+H(z)
+\end{array} \right)
+\]
+
+Для системы из $N$ слоев матрица перехроды будет иметь вид:
+
+$$
+M = M_1 \cdot M_2 \cdot ... \cdot M_N
+$$
+
+Рассмотрим пример для 4 слоев, для из которых уходят на бесконечность. Для краткости, пусть $\delta_m = e^{i k_{zm} d_m}$. Тогда матрица системы:
+
+$$
+\begin{pmatrix}
+\frac{E_{x0\downarrow}}{H_{0\downarrow}} & -\frac{E_{x1\uparrow}}{H_{1\uparrow}} & -\frac{E_{x1\downarrow}}{H_{1\downarrow}} \delta_1 & 0 & 0 & 0 \\
+0 & \frac{E_{x1\uparrow}}{H_{1\uparrow}} \delta_1 & \frac{E_{x1\downarrow}}{H_{1\downarrow}} & -\frac{E_{x2\uparrow}}{H_{2\uparrow}} & -\frac{E_{x2\downarrow}}{H_{2\downarrow}} \delta_2 & 0 \\
+0 & 0 & 0 & \frac{E_{x2\uparrow}}{H_{2\uparrow}} \delta_2 & \frac{E_{x2\downarrow}}{H_{2\downarrow}} & -\frac{E_{x3\uparrow}}{H_{3\uparrow}} \\ \hline
+\varepsilon_{z0}\frac{E_{z0\downarrow}}{H_{0\downarrow}} & -\varepsilon_{z1}\frac{E_{z1\uparrow}}{H_{1\uparrow}} & -\varepsilon_{z1}\frac{E_{z1\downarrow}}{H_{1\downarrow}} \delta_1 & 0 & 0 & 0 \\
+0 & \varepsilon_{z1} \frac{E_{z1\uparrow}}{H_{1\uparrow}} \delta_1 & \varepsilon_{z1} \frac{E_{z1\downarrow}}{H_{1\downarrow}} & -\varepsilon_{z2} \frac{E_{z2\uparrow}}{H_{2\uparrow}} & -\varepsilon_{z2} \frac{E_{z2\downarrow}}{H_{2\downarrow}} \delta_2 & 0 \\
+0 & 0 & 0 & \varepsilon_{z2} \frac{E_{z2\uparrow}}{H_{2\uparrow}} \delta_2 & \varepsilon_{z2} \frac{E_{z2\downarrow}}{H_{2\downarrow}} & -\varepsilon_{z3} \frac{E_{z3\uparrow}}{H_{3\uparrow}}
+\end{pmatrix}
+\begin{pmatrix} H_{0\downarrow} \\ H_{1\uparrow} \\ H_{1\downarrow} \\ H_{2\uparrow} \\ H_{2\downarrow} \\ H_{3\uparrow} \end{pmatrix} = \begin{pmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{pmatrix}
+$$
+
+(Горизонтальная линия разделяет уравнения для $E_x$ и $E_z$.)
+
+Чтобы система имела нетривиальное решение, необходимо выполнение условия:
+$$
+det(M(k_x))=0
+$$
+Таким образом, задача сводится к поиску комплексного $k_x$, обращающего определитель матрицы $M(k_x)$ в ноль.
+
+\section{Локализация энергии на границах}
+\subsection{Вектор Пойнтинга}
+$$
+\mathbf{S}(z, t) = \mathbf{E}(z, t) \times \mathbf{H}(z, t)
+$$
+
+Поля представлены в виде:
+
+$$
+E_x(z,t) = \text{Re}\left[ E_x(z) e^{i k_x x - i \omega t} \right] \\
+H_y(z,t) = \text{Re}\left[ H_y(z) e^{i k_x x - i \omega t} \right]
+$$
+
+Тогда:
+
+$$
+S_x(z,t) = E_z(z,t) \cdot H_y(z,t)
+= \text{Re}\left[ E_z(z) e^{-i\omega t} \right] \cdot \text{Re}\left[ H_y(z) e^{-i\omega t} \right]
+$$
+
+Раскрываем:
+
+$$
+\text{Re}(A e^{-i\omega t}) = \frac{1}{2}(A e^{-i\omega t} + A^* e^{i\omega t})
+$$
+
+Подставляем:
+
+$$
+S_x(z,t) = \frac{1}{4} (E_z e^{-i\omega t} + E_z^* e^{i\omega t})(H_y e^{-i\omega t} + H_y^* e^{i\omega t})
+$$
+
+Раскрываем скобки:
+
+$$
+S_x(z,t) = \frac{1}{4} \Big(
+E_z H_y e^{-2i\omega t} +
+E_z H_y^* +
+E_z^* H_y +
+E_z^* H_y^* e^{2i\omega t}
+\Big)
+$$
+
+Теперь усредняем по времени:
+
+$$
+\langle S_x(z) \rangle = \frac{1}{T} \int_0^T S_x(z,t) dt
+$$
+
+Члены $ e^{\pm 2i\omega t} $ исчезают при усреднении (их интеграл за период равен нулю). Остаются только средние значения от членов без временной зависимости:
+
+$$
+\langle S_x(z) \rangle = \frac{1}{4} (E_z H_y^* + E_z^* H_y)
+= \frac{1}{2} \cdot \frac{1}{2} (E_z H_y^* + E_z^* H_y)
+= \frac{1}{2} \cdot \text{Re}(E_z H_y^*)
+$$
+
+Подставляем наши поля:
+
+\begin{equation}
+\begin{aligned}
+S_x &= -\frac{1}{2} E_z H_y^* \\
+&= -\frac{1}{2} \left( E_{zm\uparrow} e^{i k_{zm}(z - z_{\text{низ слоя } m})} + E_{zm\downarrow} e^{i k_{zm}(z_{\text{верх слоя } m} - z)} \right) \\
+&\quad \times \left( H^*_{zm\uparrow} e^{i k^*_{zm}(z_{\text{верх слоя } m} - z)} + H^*_{zm\downarrow} e^{i k^*_{zm}(z - z_{\text{низ слоя } m})} \right) \\
+&= \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{2} e^{-2 \operatorname{Im}(k_{zm})(z-z_{\text{низ слоя } m})} \\
+&\quad + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{2} e^{-2 \operatorname{Im}(k_{zm})(z_{\text{верх слоя } m}-z)} \\
+&\quad + \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{2} e^{ik_{zm} d_m} e^{-2i \operatorname{Re}(k_{zm})(z-z_{\text{низ слоя } m})} \\
+&\quad + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{2} e^{ik_{zm} d_m} e^{-2i \operatorname{Re}(k_{zm})(z_{\text{верх слоя } m}-z)}.
+\end{aligned}
+\end{equation}
+
+Проинтегрируем:
+\begin{equation}
+\begin{aligned}
+\int_{z_{\text{низ слоя } m}}^{z_{\text{верх слоя } m}} S_x \, dz
+&= \frac{-E_{zm\uparrow}H_{m\uparrow}^*}{4 \operatorname{Im}(k_{zm})} \left(1 - e^{-2\operatorname{Im}(k_{zm})d_m}\right) \\
+&\quad + \frac{-E_{zm\downarrow}H_{m\downarrow}^*}{4 \operatorname{Im}(k_{zm})} \left(1 - e^{-2\operatorname{Im}(k_{zm})d_m}\right) \\
+&\quad + \frac{-E_{zm\downarrow}H_{m\uparrow}^*}{4i\operatorname{Re}(k_{zm})} e^{i k_{zm} d_m} \left(1 - e^{-2i\operatorname{Re}(k_{zm})d_m}\right) \\
+&\quad + \frac{-E_{zm\uparrow}H_{m\downarrow}^*}{4i \operatorname{Re}(k_{zm})} e^{ik_{zm} d_m} \left(1 - e^{-2i \operatorname{Re}(k_{zm})d_m}\right).
+\end{aligned}
+\end{equation}
+
+
+
+
+\subsection{Анализ пиков энергии}
+На границах раздела наблюдаются следующие эффекты:
+\begin{enumerate}
+\item Усиление электрического поля в металле вблизи границы
+\item Максимум плотности энергии приходится на границу раздела
+\end{enumerate}
+
+\section{Численные методы}
+\subsection{Поиск корней}
+Алгоритм решения:
+\begin{enumerate}
+\item Задание начального приближения для $k_x$
+\item Вычисление $k_{zm}$ для всех слоев
+\item Построение матрицы системы
+\item Вычисление $\det(M(k_x))$
+\item Сужение области в окрестности найденных кандидатов минимума
+\end{enumerate}
+
+\subsection{Критерии сходимости}
+\begin{itemize}
+\item $|\det(M)| < \epsilon$
+\item Физичность решения (правильный знак мнимой части)
+\end{itemize}
+
+\section{Результаты}
+\subsection{Воздух-Au-Воздух}
+Структура представляет из себя бесконечно толстый слой воздуха сверху, слой Au толщиной $300$ нм и еще один слой воздуха.
+
+Показатели диэлеткрической проницаемости для воздуха равны 1 по всем направлениям. Для золота диэлектричсекая проницаемость принята $\epsilon_{Au}=-21.19+0.7361i$ по всем направляениям.
+
+Посмотрим на поле $H_y$ и на вектор Пойнтинга $S_x$ от глубины проникновения при некоторой моде.
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{localization_of_Hy_ama.png}
+  \caption{Распределение поля $H_y$}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{localization_of_Sx_ama.png}
+  \caption{Распределение вектора Пойнтинга $S_x$}
+\end{minipage}
+\end{figure}
+
+На этих графиках четка видна основная суть поверхностных плазмонных поляритонов - поле локализуется на границе раздела двух сред. Такой же эффект можно наблюдать и для вектора Пойнтинга, характерные пики наблюдаются на границах раздела.
+
+\subsection{Glass-Au-$\mathrm{MgF_2}$-Au-$\mathrm{MgF_2}$-Au-Glass}
+\begingroup
+\par\noindent
+Такая структура была найдена в статье \href{http://dx.doi.org/10.1016/j.optcom.2008.09.043}{Surface plasmon modes in multi-layer thin-films, T.J. Davis}. В ней же автор приводит моды, на которых ему удалось поймать поверхностные плазмонные поляритоны. Из названия структуры понятно, что она состоит из последовательных слоев: стекла, золота, $\mathrm{MgF_2}$, золота, $\mathrm{MgF_2}$, золота и стекла.
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{\textwidth}
+\centering
+Характеристики материалов выглядят следующим образом:
+
+\begin{tabular}{|l|c|c|c|}
+\hline
+Слой & Толщина (нм) & $\varepsilon_x$ & $\varepsilon_z$ \\
+\hline
+glass\_top & $\infty$ & 2.310 & 2.310 \\
+Au & 75 & $-21.19 + 0.7361i$ & $-21.19 + 0.7361i$ \\
+MgF$_2$\_1 & 10 & 1.891 & 1.891 \\
+\hline
+\end{tabular}
+\end{minipage}
+\caption{Параметры всех слоёв}
+\label{tab:layers}
+\end{figure}
+
+Графики для такой структуры очень зависят от мод. Посмотрим на пару найденных мод.
+\endgroup
+
+\begin{figure}[H]
+\centering
+
+% --- Первая строка ---
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{localization_H_davis_1.png}
+  \caption{Распределение поля $H_y$ (Мода 1)}
+  \label{fig:H1}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{localization_S_davis_1.png}
+  \caption{Распределение вектора Пойнтинга $S_x$ (Мода 1)}
+  \label{fig:S1}
+\end{minipage}
+
+\vspace{1em} % Отступ между строками
+
+% --- Вторая строка ---
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{localization_H_davis_2.png}
+  \caption{Распределение поля $H_y$ (Мода 2)}
+  \label{fig:H2}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{localization_S_davis_2.png}
+  \caption{Распределение вектора Пойнтинга $S_x$ (Мода 2)}
+  \label{fig:S2}
+\end{minipage}
+
+\end{figure}
+
+\begingroup
+\par\noindent
+В первой представленной моде отчетливо видно, что поле локализуется на внешней границе, в то время как во второй локализация происходит на границах других слоев структуры. Характерной особенностью графиков является их симметрия, связанная с симметрией структуры.
+\endgroup
+
+В работе также были проверены моды из статьи. В итоге, все найденные в статье моды юыли найдены и с помощью численных методом с высокой точностью.
+
+
+\subsection{Стурктура с анизотропным слоем}
+
+\end{document}
