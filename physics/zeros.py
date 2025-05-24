@@ -10,6 +10,8 @@ from tmm.tmm import bc_matrix
 from physics.modes import find_kzs
 from system.optical_system import OpticalSystem
 
+from tqdm import tqdm
+
 INF = float('inf')
 
 class ModeFinder:
@@ -252,7 +254,7 @@ class ModeFinder:
         region_width_im = max_im - min_im
 
         all_zeros = []
-        for iteration in range(iterations):
+        for iteration in tqdm(range(iterations)):
             current_zeros = []
             for region in regions:
                 current_zeros.extend(self.find_local_minima(

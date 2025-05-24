@@ -16,7 +16,8 @@ def run(path: str,
         grid_points: int = 20,
         iterations: int = 10,
         reduction_factor: int = 9,
-        num_to_visualize: int = 10**18
+        num_to_visualize: int = 10**18,
+        visualisation_type: List = ['H']
         ):
 
     """
@@ -43,7 +44,7 @@ def run(path: str,
     kx_list = finder.find_kx_modes(params, show_progress=False,
                                    search_domain=search_domain_kx,
                                    grid_points=grid_points, iterations=iterations, reduction_factor=reduction_factor,
-                                   plot_full_region=True)
+                                   plot_full_region=False)
     print('kx_list -- ' + str(len(kx_list)) + ' items')
     print('---')
     for kx in kx_list:
@@ -55,4 +56,4 @@ def run(path: str,
         new_params = deepcopy(params)
         new_params['kx'] = kx_list[i]
         out = find_all_params_from_kx(new_params)
-        visualize(out, new_params)
+        visualize(out, new_params, type=visualisation_type)
