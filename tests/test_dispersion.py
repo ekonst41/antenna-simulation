@@ -13,6 +13,6 @@ for w in wavelengths:
     with open("config/config_tmp.yaml", "w") as f:
         yaml.dump(config, f, sort_keys=False)
     print(f"\n=== Running for λ = {w} nm ===")
-    run("config_tmp.yaml", search_domain_kx=search_domain_kx, visual=False, save_kx=True, save_kx_path='results/dispersion/data')
+    run("config_tmp.yaml", visual=False, save_kx=True, save_kx_path='results/dispersion/data')
 
-plot_kx_dispersion('results/dispersion/data')
+plot_kx_dispersion('results/dispersion/data', wavelengths)

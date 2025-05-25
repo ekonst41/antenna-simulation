@@ -57,7 +57,8 @@ def run(path: str,
 
     if save_kx:
         wavelength = round(2 * np.pi * nu.c0 / (params['w'] * nu.nm))
-        save_kx_array_to_file(kx_list, wavelength, save_kx_path)
+        kx_array = [kx * nu.nm for kx in kx_list]
+        save_kx_array_to_file(kx_array, wavelength, save_kx_path)
 
     for i in range(min(0 if not visual else num_to_visualize, len(kx_list))):
         new_params = deepcopy(params)

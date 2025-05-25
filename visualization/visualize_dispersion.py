@@ -2,10 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 
-def plot_kx_dispersion(folder: str):
+def plot_kx_dispersion(folder: str, wavelength):
     folder_path = Path(folder)
-    npz_files = sorted(folder_path.glob("wavelength_*nm.npz"),
-                       key=lambda p: int(p.stem.split('_')[1].replace('nm', '')))
+    npz_files = [
+        folder_path / f"wavelength_{int(w)}nm.npz"
+        for w in sorted(wavelength)
+        if (folder_path / f"wavelength_{int(w)}nm.npz").exists()
+    ]
 
     wavelengths = []
     re_kx = []
@@ -18,6 +21,9 @@ def plot_kx_dispersion(folder: str):
         wavelengths.append(wl)
         re_kx.append(kx.real)
         im_kx.append(kx.imag)
+
+    #print(re_kx)
+    #print(im_kx)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 4))
 
