@@ -26,6 +26,8 @@ def visualize_H(out, params, left_bound=-300, right_bound=500, num=400):
     ax.set_facecolor(colors['bg'])
     
     kx = params['kx']
+    w = params['w']
+    wavelength = 2 * np.pi * nu.c0 / (w * nu.nm)
     zs = np.linspace(left_bound * nu.nm, right_bound * nu.nm, num=num)
     Hs = np.array([calculate_Hy(z, out) for z in zs])
 
@@ -59,9 +61,10 @@ def visualize_H(out, params, left_bound=-300, right_bound=500, num=400):
                 linewidth=1.5,
                 alpha=0.7)
     
-    title = r"Распределение поля $H_y$ для моды $k_x = {:.4f} + {:.4f}i$".format(
+    title = r"Распределение поля $H_y$ для моды $k_x = {:.4f} + {:.4f}i, волна {:.0f} нм$".format(
         kx.real / nu.um**-1, 
-        kx.imag / nu.um**-1
+        kx.imag / nu.um**-1,
+        wavelength
     )
     plt.title(title, pad=20, fontsize=14)
     

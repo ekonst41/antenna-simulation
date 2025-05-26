@@ -2,6 +2,7 @@ from __future__ import division, print_function
 from pathlib import Path
 from copy import deepcopy
 from typing import List, Optional
+import numpy as np
 
 from utils.config_loader import load_config
 import numericalunits as nu
@@ -16,16 +17,18 @@ def run(path: str,
         grid_points: int = 20,
         iterations: int = 10,
         reduction_factor: int = 9,
+        visual = True,
         num_to_visualize: int = 10**18,
-        visualisation_type: List = ['H']
+        visualisation_type: List = ['H'],
+        save_kx: bool = False,
+        save_kx_path = None
         ):
 
     """
     Эта функция:
     - Создаёт структуру,
     - Ищет комплексные моды с помощью `find_kx()`,
-    - Сравнивает их с опубликованными значениями,
-    - Строит графики Hy(z) для каждой моды.
+    - Строит графики.
 
     Returns:
         None
@@ -47,13 +50,25 @@ def run(path: str,
                                    plot_full_region=False)
     print('kx_list -- ' + str(len(kx_list)) + ' items')
     print('---')
-    for kx in kx_list:
+    for kx in kx_list[:5]:
         print(f'{round(kx.real / nu.um**-1, 3)} + {round(kx.imag / nu.um**-1, 3)} i')
+    print('...')
     print('---')
 
+    if save_kx:
+        wavelength = round(2 * np.pi * nu.c0 / (params['w'] * nu.nm))
+        kx_array = [kx * nu.nm for kx in kx_list]
+        save_kx_array_to_file(kx_array, wavelength, save_kx_path)
 
-    for i in range(min(num_to_visualize, len(kx_list))):
+    for i in range(min(0 if not visual else num_to_visualize, len(kx_list))):
         new_params = deepcopy(params)
         new_params['kx'] = kx_list[i]
         out = find_all_params_from_kx(new_params)
         visualize(out, new_params, type=visualisation_type)
+
+
+def save_kx_array_to_file(array, wl, save_path):
+    fname = f"{save_path}/wavelength_{wl}nm.npz"
+    np.savez(fname, wavelength=wl, kx=array)
+    print(f"Saved to file {fname}")
+
