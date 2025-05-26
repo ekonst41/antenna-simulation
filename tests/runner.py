@@ -21,7 +21,8 @@ def run(path: str,
         num_to_visualize: int = 10**18,
         visualisation_type: List = ['H'],
         save_kx: bool = False,
-        save_kx_path = None
+        save_kx_path = None,
+        return_params = False
         ):
 
     """
@@ -59,6 +60,9 @@ def run(path: str,
         wavelength = round(2 * np.pi * nu.c0 / (params['w'] * nu.nm))
         kx_array = [kx * nu.nm for kx in kx_list]
         save_kx_array_to_file(kx_array, wavelength, save_kx_path)
+
+    if return_params:
+        return kx_list, params
 
     for i in range(min(0 if not visual else num_to_visualize, len(kx_list))):
         new_params = deepcopy(params)
