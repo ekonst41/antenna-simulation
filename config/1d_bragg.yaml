@@ -1,0 +1,50 @@
+system:
+  w: 780 nm
+  layers:
+    - name: air_left
+      thickness: inf
+      ex: 1.0
+      ez: 1.0
+      mu: 1
+
+    - name: layer_A
+      thickness: 20  # нм
+      ex: 2.1
+      ez: 2.1
+      mu: 1
+
+    - name: layer_B
+      thickness: 20  # нм
+      ex: 1.45
+      ez: 1.45
+      mu: 1
+
+    - name: layer_A
+      thickness: 20
+      ex: 2.1
+      ez: 2.1
+      mu: 1
+
+    - name: layer_B
+      thickness: 20
+      ex: 1.45
+      ez: 1.45
+      mu: 1
+
+    - name: layer_A
+      thickness: 20
+      ex: 2.1
+      ez: 2.1
+      mu: 1
+
+    - name: layer_B
+      thickness: 20
+      ex: 1.45
+      ez: 1.45
+      mu: 1
+
+    - name: air_right
+      thickness: inf
+      ex: 1.0
+      ez: 1.0
+      mu: 1
