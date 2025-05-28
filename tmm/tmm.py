@@ -1,21 +1,38 @@
 from __future__ import division, print_function
-import numpy as np
+
 import cmath
+import numpy as np
 import numericalunits as nu
+
+from system.optical_system import OpticalSystem
 
 INF = float('inf')
 
-def bc_matrix(params):
+def bc_matrix(params: OpticalSystem):
     """
-    Calculate the "boundary condition matrix". This is a matrix M such that
-    
-    M * [[H0down],[H1up],[H1down],...] = [[0],[0],...]
-    
-    IF the boundary conditions are all satisfied. (See online docs for
-    definitions and what's going on.)
-    
-    params should contain ex_list, ez_list, kx, kz_list, d_list (thickness of
-    each layer, first and last should be inf.)
+    Формирует матрицу граничных условий для многослойной оптической структуры.
+
+    Эта матрица задаёт линейную систему вида:
+        M * [H0_↓, H1_↑, H1_↓, ..., HN_↑]^T = 0,
+    где M — матрица, содержащая условия непрерывности полей на границах слоёв.
+    Ненулевое решение этой системы соответствует существованию моды.
+
+    Граничные условия включают:
+        - непрерывность поперечной компоненты электрического поля Ex,
+        - непрерывность нормальной компоненты D_z = ε_z E_z.
+
+    Аргументы:
+        params (OpticalSystem): Структура с параметрами системы, содержащий:
+            - w (float): Угловая частота волны.
+            - kx (complex): Поперечное волновое число.
+            - d_list (list[float]): Толщины всех слоёв (в первом и последнем слоях — бесконечность).
+            - ex_list (list[float]): Диэлектрическая проницаемость ε_x для каждого слоя.
+            - ez_list (list[float]): Диэлектрическая проницаемость ε_z для каждого слоя.
+            - kz_list (list[complex]): Продольные компоненты волновых векторов k_z в каждом слое.
+
+    Возвращает:
+        numpy.ndarray: Комплексная матрица размером (2N-2) × (2N-2),
+        где N — количество слоёв. Её определитель обнуляется при наличии физически допустимой моды.
     """
     w = params['w']
     kx = params['kx']

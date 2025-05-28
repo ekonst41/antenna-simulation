@@ -1,19 +1,19 @@
 from __future__ import division, print_function
-from pathlib import Path
+
+import cmath
 import numpy as np
 import matplotlib.pyplot as plt
-from math import pi
 from copy import deepcopy
+from pathlib import Path
+
+import numericalunits as nu
 
 from utils.config_loader import load_config
-import numericalunits as nu
 from physics.modes import find_all_params_from_kx
-# from physics.zeros import find_kx
 from physics.zeros import ModeFinder
 from physics.fields import calculate_Hy
-from utils.checks import check_mode
+from system.optical_system import OpticalSystemConfig, OpticalSystem
 
-from system.optical_system import OpticalSystemConfig, OpticalState, OpticalSystem
 
 CONFIG_PATH = Path(__file__).parent.parent / "config" / "davis.yaml"
             

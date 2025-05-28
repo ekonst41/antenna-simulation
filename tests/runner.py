@@ -1,15 +1,16 @@
 from __future__ import division, print_function
-from pathlib import Path
-from copy import deepcopy
-from typing import List, Optional
-import numpy as np
 
-from utils.config_loader import load_config
+from copy import deepcopy
+from pathlib import Path
+from typing import List, Optional
+
+import numpy as np
 import numericalunits as nu
+
 from physics.modes import find_all_params_from_kx
 from physics.zeros import ModeFinder
-from system.optical_system import OpticalSystemConfig, OpticalState, OpticalSystem
-
+from system.optical_system import OpticalSystem, OpticalSystemConfig
+from utils.config_loader import load_config
 from visualization.visualize import visualize
 
 def run(path: str,

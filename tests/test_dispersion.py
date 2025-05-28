@@ -1,7 +1,9 @@
 import yaml
-from runner import run
-import numericalunits as nu
+
 import numpy as np
+import numericalunits as nu
+
+from runner import run
 from visualization.visualize_dispersion import plot_kx_dispersion
 
 wavelengths = np.linspace(400, 800, num=21)

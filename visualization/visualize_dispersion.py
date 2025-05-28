@@ -1,8 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from pathlib import Path
 
-def plot_kx_dispersion(folder: str, wavelength):
+import matplotlib.pyplot as plt
+import numpy as np
+
+def plot_kx_dispersion(folder: str, wavelength: float):
     folder_path = Path(folder)
     npz_files = [
         folder_path / f"wavelength_{int(w)}nm.npz"

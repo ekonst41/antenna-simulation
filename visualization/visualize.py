@@ -1,15 +1,20 @@
-import numpy as np
+from typing import List
+
 import matplotlib.pyplot as plt
 import numericalunits as nu
-from physics.fields import calculate_Hy, calculate_Sx, calculate_Ez, calculate_Ex
+import numpy as np
 
-def visualize(out, params, type):
+from physics.fields import calculate_Ez, calculate_Ex, calculate_Hy, calculate_Sx
+from system.optical_system import OpticalSystem
+
+
+def visualize(out: OpticalSystem, params: OpticalSystem, type: List[str]):
     if 'H' in type:
         visualize_H(out, params)
     if 'S' in type:
         visualize_S(out, params)
 
-def visualize_H(out, params, left_bound=-300, right_bound=500, num=400):
+def visualize_H(out: OpticalSystem, params: OpticalSystem, left_bound: float=-300, right_bound: float=500, num: int=400):
     plt.style.use('seaborn-v0_8-pastel')
     
     plt.figure(figsize=(10, 6), dpi=100)
@@ -84,7 +89,7 @@ def visualize_H(out, params, left_bound=-300, right_bound=500, num=400):
     plt.show()
 
 
-def visualize_S(out, params, left_bound=-300, right_bound=500, num=400):
+def visualize_S(out: OpticalSystem, params: OpticalSystem, left_bound: float=-300, right_bound: float=500, num: int=400):
     plt.style.use('seaborn-v0_8-pastel')
 
     plt.figure(figsize=(10, 6), dpi=100)

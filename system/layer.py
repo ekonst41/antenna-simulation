@@ -1,6 +1,7 @@
-import numericalunits as nu
-from typing import Union, Optional
 from math import inf
+from typing import Optional, Union
+
+import numericalunits as nu
 
 class Layer:
     def __init__(self, 

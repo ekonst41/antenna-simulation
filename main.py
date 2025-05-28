@@ -1,5 +1,5 @@
-from tests.test_davis import test_davis
 import numericalunits as nu
+
 from tests.runner import run
 
 search_domain_kx = [-0.05/nu.nm, 0.05/nu.nm, 0, 0.4/nu.nm]

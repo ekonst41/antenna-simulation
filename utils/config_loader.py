@@ -1,8 +1,11 @@
-import yaml
-import numericalunits as nu
-from math import pi
 import re
+from math import pi
+
+import numericalunits as nu
+import yaml
+
 from system.layer import Layer
+
 
 def _parse_complex(value):
     """Парсит комплексное число из строки в формате 'a + bj' или 'a + bj'"""
@@ -33,7 +36,7 @@ def _parse_complex(value):
             return complex(float(s))
     return complex(value)
 
-def load_config(config_path):
+def load_config(config_path: str):
     with open(config_path, 'r') as f:
         data = yaml.full_load(f)
 

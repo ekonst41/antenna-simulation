@@ -1,13 +1,13 @@
-from physics.fields import calculate_Ex, calculate_Ez, calculate_Hy, calculate_Sx
 import numericalunits as nu
 import scipy
-import math, cmath
-import numpy as np
-import matplotlib.pyplot as plt
-from copy import deepcopy
-inf = float("inf")
 
-def floats_are_equal(a, b, tol=1e-5):
+from physics.fields import calculate_Ex, calculate_Ez, calculate_Hy, calculate_Sx
+from system.optical_system import OpticalSystem
+
+
+INF = float("inf")
+
+def floats_are_equal(a: complex, b: complex, tol: float=1e-5):
     """
     Проверяет, равны ли два числа с заданной относительной точностью.
 
@@ -22,7 +22,7 @@ def floats_are_equal(a, b, tol=1e-5):
     return abs(a - b) <= tol * (abs(a) + abs(b))
 
 
-def assert_floats_are_equal(a, b, tol=1e-5):
+def assert_floats_are_equal(a: complex, b: complex, tol: float=1e-5):
     """
     Проверяет, равны ли два числа, иначе вызывает AssertionError.
 
@@ -36,12 +36,12 @@ def assert_floats_are_equal(a, b, tol=1e-5):
 from physics.fields import calculate_Ex, calculate_Ez, calculate_Hy
 
 
-def _check_boundary_conditions(params, tol=1e-5):
+def _check_boundary_conditions(params: OpticalSystem, tol=1e-5):
     """
     Проверяет выполнение граничных условий для Ex, Ez, Hy между слоями.
 
     Args:
-        params (dict): параметры моды
+        params (OpticalSystem): параметры моды
         tol (float): относительная погрешность сравнения
 
     Returns:
@@ -72,12 +72,12 @@ def _check_boundary_conditions(params, tol=1e-5):
 
     return True
 
-def _check_kz_relations(params, tol=1e-8):
+def _check_kz_relations(params: OpticalSystem, tol: float=1e-8):
     """
     Проверяет соотношение kz^2 == w²*μ*ε/c0² - kx²*ε/ε_z.
 
     Args:
-        params (dict): параметры моды
+        params (OpticalSystem): параметры моды
         tol (float): допуск проверки
 
     Returns:
@@ -110,7 +110,7 @@ def _check_kz_relations(params, tol=1e-8):
 from physics.fields import calculate_Sx
 
 
-def _check_poynting_vector(params, tol=1e-5):
+def _check_poynting_vector(params: OpticalSystem, tol: float=1e-5):
     """
     Проверяет согласованность вектора Пойнтинга через интегрирование.
 
@@ -151,12 +151,12 @@ def _check_poynting_vector(params, tol=1e-5):
 
     return True
 
-def check_mode(params, thorough=False, tol=1e-5):
+def check_mode(params: OpticalSystem, thorough: bool=False, tol: float=1e-5):
     """
     Проверяет корректность найденной моды.
 
     Args:
-        params (dict): параметры моды
+        params (OpticalSystem): параметры моды
         thorough (bool): провести полную проверку (медленнее)
         tol (float): относительная погрешность
 
