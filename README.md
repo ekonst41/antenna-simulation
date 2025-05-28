@@ -18,23 +18,23 @@
 
 **Поле для TM-поляризации** представляется в виде:
 
-\[
+$$
 \mathbf{E}(x,z,t) = \mathbf{E}(z) e^{i(k_x x - \omega t)}, \quad 
 \mathbf{H}(x,z,t) = \mathbf{H}(z) e^{i(k_x x - \omega t)}
-\]
+$$
 
 Компоненты полей выражаются через \( H_y \):
 
-\[
+$$
 E_x = -\frac{i}{\omega \varepsilon_0 \varepsilon_x} \frac{\partial H_y}{\partial z}, \quad
 E_z = \frac{i k_x}{\omega \varepsilon_0 \varepsilon_z} H_y
-\]
+$$
 
 Решение для продольного волнового числа в каждом слое:
 
-\[
+$$
 k_{zm} = \pm \sqrt{\frac{\omega^2 \mu_y \varepsilon_x}{c^2} - \frac{\varepsilon_x}{\varepsilon_z}k_x^2}
-\]
+$$
 
 ---
 
@@ -42,7 +42,7 @@ k_{zm} = \pm \sqrt{\frac{\omega^2 \mu_y \varepsilon_x}{c^2} - \frac{\varepsilon_
 
 Метод применяется для анализа мод в многослойной структуре. Каждому слою соответствует матрица передачи, и вся структура описывается произведением таких матриц:
 
-\[
+$$
 \begin{pmatrix}
 E(z+L) \\ 
 H(z+L)
@@ -53,12 +53,13 @@ E(z) \\
 H(z)
 \end{pmatrix}, \quad
 M = M_1 M_2 \dots M_N
-\]
+$$
 
 Условие существования моды:
-\[
+
+$$
 \det M(k_x) = 0
-\]
+$$
 
 Поиск моды сводится к **поиску комплексного значения \(k_x\)**, при котором определитель системы обращается в ноль.
 
