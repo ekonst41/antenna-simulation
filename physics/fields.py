@@ -145,3 +145,8 @@ def calculate_Sx(z: float, params: Dict, x: float = 0, layer: Optional[int] = No
     Ez_here = calculate_Ez(z, params, x=x, layer=layer)
     Hy_here = calculate_Hy(z, params, x=x, layer=layer)
     return -0.5 * Ez_here * Hy_here.conjugate()
+
+def calculate_Sz(z:float, params: Dict, x: float = 0, layer: Optional[int] = None):
+    Ex_here = calculate_Ex(z, params, x=x, layer=layer)
+    Hy_here = calculate_Hy(z, params, x=x, layer=layer)
+    return 0.5 * Ex_here * Hy_here.conjugate()

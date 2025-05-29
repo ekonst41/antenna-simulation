@@ -1,5 +1,8 @@
 from matplotlib import pyplot as plt
-from physics.modes import find_kzs
+
+from physics.fields import calculate_Sx, calculate_Sz
+from physics.modes import find_kzs, find_all_params_from_kx
+from visualization.visualize import visualize
 from tests.runner import run
 from copy import deepcopy
 import numpy as np
@@ -24,7 +27,7 @@ def find_r_and_t(kz_list, ez_list):
         t.append(2 * ni * nj * ki / (ej * ki + ei * kj))
     return r, t
 
-def visualize(kx, r, t):
+def visualize_r_and_t(kx, r, t):
     kx = np.array(kx)
     r = np.array(r)
     t = np.array(t)
@@ -82,20 +85,31 @@ def visualize(kx, r, t):
 def run_reflection_test(path):
     kx_list, params  = run(path, visual=False, return_params=True)
     kx_orig = kx_list[0]
-    kx_list = make_complex_grid(kx_orig * 1/2, kx_orig * 3/2, 101, 1)
-    print(kx_list)
+    kx_list = make_complex_grid(kx_orig * 1/2, kx_orig * 3/2, 5, 1)
     r_list = []
-    t_list = []
+    tx_list = []
+    tz_list = []
     for kx in kx_list:
         new_params = deepcopy(params)
         new_params['kx'] = kx
-        new_params = find_kzs(new_params)
-        kz_list = new_params['kz_list']
+        out = find_all_params_from_kx(new_params)
+        boundary_pos = sum(params['d_list'][1:-1])
+        delta = boundary_pos * 10**(-4)
+        Sx_left = calculate_Sx(-delta, out)
+        Sz_left = calculate_Sz(-delta, out)
+        Sx_right = calculate_Sx(boundary_pos + delta, out)
+        Sz_right = calculate_Sz(boundary_pos + delta, out)
+        #print(Sx_right.real / Sx_left.real, Sz_right.real / Sz_left.real)
+        visualize(out, new_params, type=['Sz', 'S', 'H'])
+        tx_list.append(Sx_right / Sx_left)
+        tz_list.append(Sz_right / Sz_left)
+    visualize_r_and_t(kx_list, tx_list, tz_list)
+    '''kz_list = new_params['kz_list']
         ez_list = new_params['ez_list']
         r, t = find_r_and_t(kz_list, ez_list)
         r_list.append(r[1])
         t_list.append(t[1])
-    visualize(kx_list, r_list, t_list)
+    visualize(kx_list, r_list, t_list)'''
 
 
 
