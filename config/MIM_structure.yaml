@@ -1,0 +1,48 @@
+system:
+  w: 780 nm
+  layers:
+    - name: air_left
+      thickness: inf
+      ex: 1.0
+      ez: 1.0
+      mu: 1
+    - name: Au_1
+      thickness: 100
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: glass
+      thickness: 10
+      ex: 2.310
+      ez: 2.310
+      mu: 1
+    - name: Au_2
+      thickness: 100
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: glass
+      thickness: 10
+      ex: 2.310
+      ez: 2.310
+      mu: 1
+    - name: Au_2
+      thickness: 100
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: glass
+      thickness: 10
+      ex: 2.310
+      ez: 2.310
+      mu: 1
+    - name: Au_2
+      thickness: 100
+      ex: !!python/complex -21.19+0.7361j
+      ez: !!python/complex -21.19+0.7361j
+      mu: 1
+    - name: air_right
+      thickness: inf
+      ex: 1.0
+      ez: 1.0
+      mu: 1
