@@ -51,7 +51,14 @@ def visualize_H(out: OpticalSystem, params: OpticalSystem, left_bound: float=-30
              color=colors['im'], 
              linewidth=2.5,
              alpha=0.8)
-    
+
+    '''boundary = [sum(params['d_list'][1:i]) / nu.nm for i in range(1, len(params['d_list']))]
+    for b in boundary:
+        plt.axvline(x=b,
+                    color=colors['boundary'],
+                    linestyle='--',
+                    linewidth=1.5,
+                    alpha=0.4)'''
     boundary_pos = sum(params['d_list'][1:-1]) / nu.nm
     plt.axvline(x=0, 
                 color=colors['boundary'], 
@@ -66,7 +73,7 @@ def visualize_H(out: OpticalSystem, params: OpticalSystem, left_bound: float=-30
                 linewidth=1.5,
                 alpha=0.7)
     
-    title = r"Распределение поля $H_y$ для моды $k_x = {:.4f} + {:.4f}i, волна {:.0f} нм$".format(
+    title = r"Распределение поля $H_y$ для моды $k_x = {:.4f} + {:.4f}i$".format(
         kx.real / nu.um**-1, 
         kx.imag / nu.um**-1,
         wavelength
@@ -124,6 +131,14 @@ def visualize_S(out: OpticalSystem, params: OpticalSystem, left_bound: float=-30
              color=colors['im'],
              linewidth=2.5,
              alpha=0.8)
+
+    boundary = [sum(params['d_list'][1:i]) / nu.nm for i in range(1, len(params['d_list']))]
+    for b in boundary:
+        plt.axvline(x=b,
+                    color=colors['boundary'],
+                    linestyle='--',
+                    linewidth=1.5,
+                    alpha=0.4)
 
     boundary_pos = sum(params['d_list'][1:-1]) / nu.nm
     plt.axvline(x=0,

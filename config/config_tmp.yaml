@@ -1,0 +1,18 @@
+system:
+  w: 800.0 nm
+  layers:
+  - name: air
+    thickness: inf
+    ex: 1
+    ez: 1
+    mu: 1
+  - name: Au
+    thickness: 300
+    ex: &id001 !!python/complex '-33.8505+1.3551j'
+    ez: *id001
+    mu: 1
+  - name: air
+    thickness: inf
+    ex: 1
+    ez: 1
+    mu: 1

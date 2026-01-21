@@ -22,7 +22,8 @@ def run(path: str,
         num_to_visualize: int = 10**18,
         visualisation_type: List = ['H'],
         save_kx: bool = False,
-        save_kx_path = None
+        save_kx_path = None,
+        return_params = False
         ):
 
     """
@@ -66,6 +67,9 @@ def run(path: str,
         new_params['kx'] = kx_list[i]
         out = find_all_params_from_kx(new_params)
         visualize(out, new_params, type=visualisation_type)
+
+    if return_params:
+        return kx_list, params
 
 
 def save_kx_array_to_file(array, wl, save_path):

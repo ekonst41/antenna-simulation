@@ -7,6 +7,7 @@ from runner import run
 from visualization.visualize_dispersion import plot_kx_dispersion
 
 wavelengths = np.linspace(400, 800, num=21)
+epsilon = []
 w_plasma = 1.39 * 10**16
 gamma = 91.55 * 10**12
 
@@ -21,6 +22,7 @@ for w in wavelengths:
             cycle_w = 2 * np.pi * nu.c0 / (w * 10**(-9))
             eps = complex(round(1 - (w_plasma  / cycle_w)**2, 4),
                           round(gamma * w_plasma**2 / (cycle_w**3), 4))
+            epsilon.append(eps)
             layer["ex"] = eps
             layer["ez"] = eps
     with open("config/config_tmp.yaml", "w") as f:
@@ -28,4 +30,4 @@ for w in wavelengths:
     print(f"\n=== Running for λ = {w} nm ===")
     run("config_tmp.yaml", visual=False, save_kx=True, save_kx_path='results/dispersion/data')
 
-plot_kx_dispersion('results/dispersion/data', wavelengths)
+plot_kx_dispersion('results/dispersion/data', wavelengths, epsilon)

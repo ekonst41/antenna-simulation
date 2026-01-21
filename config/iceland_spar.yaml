@@ -8,7 +8,7 @@ system:
       mu: 1
     - name: iceland_spar
       thickness: 225
-      ex: 2.75
+      ex: 2.21
       ez: 2.21
       mu: 1
     - name: Au

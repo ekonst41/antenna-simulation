@@ -1,5 +1,5 @@
 system:
-  w: 780 nm
+  w: 600 nm
   layers:
     - name: air_left
       thickness: inf
@@ -8,37 +8,7 @@ system:
       mu: 1
 
     - name: layer_A
-      thickness: 20  # нм
-      ex: 2.1
-      ez: 2.1
-      mu: 1
-
-    - name: layer_B
-      thickness: 20  # нм
-      ex: 1.45
-      ez: 1.45
-      mu: 1
-
-    - name: layer_A
-      thickness: 20
-      ex: 2.1
-      ez: 2.1
-      mu: 1
-
-    - name: layer_B
-      thickness: 20
-      ex: 1.45
-      ez: 1.45
-      mu: 1
-
-    - name: layer_A
-      thickness: 20
-      ex: 2.1
-      ez: 2.1
-      mu: 1
-
-    - name: layer_B
-      thickness: 20
+      thickness: 200  # нм
       ex: 1.45
       ez: 1.45
       mu: 1
